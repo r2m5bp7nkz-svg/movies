@@ -18,4 +18,5 @@ python3 scripts/audience_audit.py $D     # re-verify every NULL Popcornmeter in 
 python3 scripts/imdb_ratings.py $D       # IMDb rating/votes (official dataset) -> imdb_rating_obs
 python3 scripts/flags_and_changes.py $D  # flags + change_events vs previous run
 python3 scripts/audience_counts.py $D    # r3: RT audience rating-count bucket (>=250) for every r2 candidate, evidence + unreadable flags
+python3 scripts/persist_lookups.py $D    # store every lookup (RT lists, RT search, JW searches, IMDb, audits) in lookup_obs, whatever the outcome
 python3 scripts/build_report.py          # report.html + report.md

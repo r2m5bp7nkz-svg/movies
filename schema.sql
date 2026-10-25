@@ -134,6 +134,14 @@ CREATE TABLE IF NOT EXISTS audience_count_obs(
 -- A URL with an HTTP 200 fetch younger than CACHE_DAYS (7) is served from cache_file; --refresh / MOVIES_REFRESH=1 forces a live fetch.
 CREATE TABLE IF NOT EXISTS fetch_cache(url TEXT PRIMARY KEY, cache_file TEXT, http_status INTEGER, checked_at TEXT NOT NULL,
  bytes INTEGER, source TEXT, last_reused_at TEXT, reuse_count INTEGER NOT NULL DEFAULT 0);
+-- Every other lookup (RT browse-list items, RT search matches incl. non-matches, JustWatch title searches, IMDb suggestion
+-- records, audience-audit re-checks), whatever the outcome, with the full raw record (scripts/persist_lookups.py).
+CREATE TABLE IF NOT EXISTS lookup_obs(
+ obs_id INTEGER PRIMARY KEY, run_id INTEGER NOT NULL REFERENCES runs(run_id) ON DELETE CASCADE,
+ stage TEXT NOT NULL,                  -- rt_browse | rt_search | jw_supplement | imdb_suggest | audience_audit
+ lookup_key TEXT NOT NULL, service_code TEXT NOT NULL DEFAULT '', movie_id INTEGER REFERENCES movies(movie_id),
+ title TEXT, year INTEGER, url TEXT, http_status INTEGER, result TEXT, data_json TEXT, checked_at TEXT NOT NULL,
+ UNIQUE(run_id, stage, lookup_key, service_code));
 DROP VIEW IF EXISTS v_latest_audience_count;
 CREATE VIEW v_latest_audience_count AS SELECT * FROM audience_count_obs WHERE run_id=(SELECT run_id FROM v_latest_run);
 

@@ -22,6 +22,15 @@ Every lookup is persisted in `movies.db` with its source URL and checked_at time
 - Not cached: the JustWatch catalog (GraphQL POST in `jw_catalog.py`/`jw_supplement.py`, which must be complete each run), the IMDb ratings dataset (`imdb_ratings.py`, one daily file), and `audience_audit.py`'s NULL-Popcornmeter re-checks (deliberately live).
 - Existing captures from 2026-10-24/25 were registered by `scripts/backfill_fetch_cache.py` (one-off; checked_at = file mtime). With a 7-day window they are reused through 2026-10-31; a run on 2026-11-24 fetches fresh.
 
+## Every lookup is stored (added 2026-10-25)
+Nothing that was looked up is discarded, whether or not it passes a rule (low scores, few reviews, under 250 ratings, wrong year, not a film, not included with the subscription, no RT page):
+- `movies`: every JustWatch catalog title becomes a row. Titles with no RT match or an RT page that failed to load are kept with `rt_slug` NULL (keyed by `jw_id`), their JustWatch/IMDb data, and `exclude_reason` saying why; if a later run finds the RT page, the slug is attached to the same row. Every matched RT page is stored in `score_obs` (+ evidence) regardless of score.
+- `availability_obs`: every JustWatch offer seen is stored, including rent, buy, ads/free and other packages (`unknown`), not just included ones; only `included` on the service's own package counts.
+- `audience_count_obs`: every r2 candidate's rating-count bucket, including those under 250.
+- `lookup_obs` (`scripts/persist_lookups.py`): every other lookup with its full raw record, URL and checked_at: RT browse-list items (all scores), RT search attempts (match or not), JustWatch title searches, IMDb suggestion records, and audience-audit re-checks.
+- `fetch_cache`: every URL fetched, with its saved file and checked_at.
+As of 2026-10-25: 3178 movies stored (2568 with an RT page, 610 JustWatch-only), 77 distinct movies qualify for at least one service's main table under r3.
+
 ## Adding years or services
 - **Years:** change `releaseYear:{min:2025,max:2026}` in `scripts/jw_catalog.py` and the `release_year IN (2025,2026)` filter in the `v_qualifying` view.
 - **Services:** add a row to `SERVICES` / `INCLUDED_PK` / `PK_INFO` / `REELGOOD_SRC` in `scripts/common.py` (JustWatch package shortName), then add an RT browse affiliate (if RT has one) in `scripts/rt_browse.py` and a page parser in `scripts/official_check.py` → `judge()`.
@@ -32,6 +41,7 @@ Every lookup is persisted in `movies.db` with its source URL and checked_at time
 - `movies`: keyed by RT slug. Holds release_year (rule in method.md), the IMDb/RT/JW years, runtime, IMDb type, genre_label, kid_friendly and exclude_reason.
 - `sightings`: candidate discovery per run/service/source.
 - `availability_obs`: per run × movie × service × source (`justwatch`, `official`, `reelgood`, `rt_where_to_watch`, `manual`) × offer_type (`included`, `channel_addon`, `rent`, `buy`, `bundle`, `free_ads`, `not_listed`, `coming_soon`, `unreachable`, `unknown`), with URL, HTTP status and detail.
+- `lookup_obs`: every RT-list item, RT search, JustWatch search, IMDb record and audience audit, any outcome (see Every lookup is stored).
 - `fetch_cache`: every fetched URL with its saved file and checked_at (see Caching).
 - `audience_count_obs` (r3): the RT audience rating-count bucket shown next to the Popcornmeter (band text, lower bound `band_min`, verified or all-audience, visible markup + scorecard JSON, status ok/unreadable) per run and movie, from `scripts/audience_counts.py`. Evidence claim `audience_rating_count`.
 - `score_obs`: Tomatometer, critic review count, average, certified, Popcornmeter, audience band and counts per run.

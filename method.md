@@ -31,3 +31,6 @@ Requested by Emil. A movie qualifies for the main per-service table only if, in 
 
 ## Caching (2026-10-25)
 Every GET is logged in `fetch_cache` (URL, saved file, HTTP status, checked_at). A URL successfully fetched within the last 7 days is served from its saved capture; `--refresh` forces a live fetch. `audience_counts.py` also reuses whole `audience_count_obs` observations younger than 7 days (`reused_from_obs_id`). So a re-run within a week reflects pages as they were when first fetched; use `--refresh` for a true re-check. JustWatch catalog pulls, the IMDb dataset and the audience audit are always live.
+
+## Storage of non-qualifiers (2026-10-25)
+Every lookup is persisted whatever its outcome: all JustWatch catalog titles (including those without an RT page, stored by `jw_id` with the reason), all RT pages' scores, all JustWatch offers (rent/buy/ads/other packages too), all audience-count reads, and every RT list item, RT search, JustWatch search, IMDb record and audit re-check in `lookup_obs`. Rules are applied only in the views.

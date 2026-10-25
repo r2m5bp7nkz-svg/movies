@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-"""Stage 4: load raw JW catalog + IMDb + RT pages for a run date into movies.db (idempotent per run)."""
+"""Stage 4: load raw JW catalog + IMDb + RT pages for a run date into movies.db (idempotent per run).
+Never discards a lookup: every JustWatch catalog title becomes a movies row, including titles with no RT match or an RT page that
+failed to load (rt_slug NULL, keyed by jw_id, exclude_reason says why), and every JustWatch offer is stored (rent/buy/other packages too)."""
 import json, glob, sys, os, re, datetime
 sys.path.insert(0, os.path.dirname(__file__)); from common import *
 D=sys.argv[1] if len(sys.argv)>1 else datetime.date.today().isoformat()
@@ -17,7 +19,7 @@ run=c.execute("SELECT run_id FROM runs WHERE run_date=?",(D,)).fetchone()[0]
 # re-running a date replaces that run's discovery/score/JW/RT observations (official + reelgood checks are re-done by their own scripts)
 for t in ('sightings','score_obs'): c.execute(f"DELETE FROM {t} WHERE run_id=?",(run,))
 c.execute("DELETE FROM availability_obs WHERE run_id=? AND source IN ('justwatch','rt_where_to_watch')",(run,))
-c.execute("DELETE FROM evidence WHERE run_id=? AND doc_type IN ('rt_page','imdb')",(run,))
+c.execute("DELETE FROM evidence WHERE run_id=? AND doc_type IN ('rt_page','imdb') AND claim IN ('tomatometer','popcornmeter','release_year')",(run,))
 imdb=json.load(open(f'{BASE}/raw/imdb_{D}.json')); match=json.load(open(f'{BASE}/raw/rt_match_{D}.json'))
 pages=json.load(open(f'{BASE}/raw/rt_pages_{D}.json'))
 man={k:v for k,v in json.load(open(f'{BASE}/overrides/rt_manual.json')).items() if not k.startswith('_')}
@@ -58,6 +60,9 @@ for f in sorted(glob.glob(f'{BASE}/raw/jw_*_{D}.json')):
             elif year not in (2025,2026): excl='first released %s (before 2025)'%year
             o=ov.get(slug,{})
             if 'exclude_reason' in o: excl=o['exclude_reason']
+            # a title stored earlier without an RT page (keyed by jw_id) that now has one: attach the slug to that row
+            if not c.execute("SELECT 1 FROM movies WHERE rt_slug=?",(slug,)).fetchone():
+                c.execute("UPDATE movies SET rt_slug=?, updated_at=CURRENT_TIMESTAMP WHERE jw_id=? AND rt_slug IS NULL",(slug,jid))
             ptitle=(p.get('title') or ct['title']).strip()
             c.execute("""INSERT INTO movies(rt_slug,title,original_title,release_year,imdb_year,rt_year,jw_year,year_note,imdb_id,imdb_type,jw_id,tmdb_id,
                 runtime_min,rt_genres,original_language,countries,content_rating,exclude_reason) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
@@ -91,6 +96,23 @@ for f in sorted(glob.glob(f'{BASE}/raw/jw_*_{D}.json')):
                 sc=RT_WTW_NAMES.get(s)
                 if sc: c.execute("INSERT OR REPLACE INTO availability_obs(run_id,movie_id,service_code,source,offer_type,package,url,http_status,detail,observed_at) VALUES(?,?,?,?,?,?,?,?,?,?)",
                     (run,mid,sc,'rt_where_to_watch','included',s,url,200,txt[:300],p['retrieved_at']))
+        if mid is None:
+            # no usable RT page: store the JustWatch + IMDb data anyway (never discard a lookup)
+            iy=im.get('y'); jy=ct['originalReleaseYear']; ys=[y for y in (iy,jy) if y]
+            itype=im.get('qid')
+            why=(f"RT page {url} returned HTTP {(p or {}).get('http')}" if url else 'no Rotten Tomatoes page found by RT search ('+', '.join(f"{t!r}:{h}" for t,h in ((match.get(jid) or {}).get('tried') or []))+')')
+            vals=(ct['title'],ct['title'],min(ys) if ys else None,iy,jy,ct['externalIds']['imdbId'],itype,ct['externalIds']['tmdbId'],ct.get('runtime'),
+                  ', '.join(g['shortName'] for g in (ct.get('genres') or [])),','.join(ct.get('productionCountries') or []),ct.get('ageCertification'),why)
+            r=c.execute("SELECT movie_id FROM movies WHERE jw_id=? AND rt_slug IS NULL",(jid,)).fetchone()
+            if r:
+                mid=r[0]; c.execute("""UPDATE movies SET title=?,original_title=?,release_year=?,imdb_year=?,jw_year=?,imdb_id=?,imdb_type=?,tmdb_id=?,runtime_min=?,
+                    rt_genres=?,countries=?,content_rating=?,exclude_reason=?,updated_at=CURRENT_TIMESTAMP WHERE movie_id=?""",vals+(mid,))
+            else:
+                c.execute("""INSERT INTO movies(title,original_title,release_year,imdb_year,jw_year,imdb_id,imdb_type,tmdb_id,runtime_min,rt_genres,countries,content_rating,exclude_reason,jw_id,notes)
+                    VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",vals+(jid,'JustWatch-only record (no RT page); rt_genres holds JustWatch genre codes'))
+                mid=c.execute("SELECT last_insert_rowid()").fetchone()[0]
+            c.execute("INSERT OR REPLACE INTO sources_checked(run_id,source,url,checked_at,result,notes) VALUES(?,?,?,?,?,?)",
+                (run,'rt_page_missing',url or f'rt_search:{jid}',now,str((p or {}).get('http') or 'no match'),ct['title']))
         # sightings + JW availability
         c.execute("INSERT OR IGNORE INTO sightings(run_id,service_code,movie_id,source,raw_title,raw_year,jw_id,url,seen_at) VALUES(?,?,?,?,?,?,?,?,?)",
             (run,svc,mid,'justwatch_catalog',ct['title'],ct['originalReleaseYear'],jid,'https://www.justwatch.com'+(ct['fullPath'] or ''),D))
@@ -100,10 +122,13 @@ for f in sorted(glob.glob(f'{BASE}/raw/jw_*_{D}.json')):
                 if pk in INCLUDED_PK[svc] and mt=='FLATRATE': ot='included'
                 elif svc=='prime' and 'Amazon Channel' in (o['package']['clearName'] or '') and mt=='FLATRATE': ot='channel_addon'
                 elif pk in INCLUDED_PK[svc] and mt=='ADS': ot='free_ads'
-                else: continue
+                elif mt=='RENT': ot='rent'
+                elif mt=='BUY': ot='buy'
+                elif mt in ('ADS','FREE'): ot='free_ads'
+                else: ot='unknown'     # other package/monetization seen in this service's catalog pull; stored, never counted as included
                 c.execute("INSERT OR IGNORE INTO availability_obs(run_id,movie_id,service_code,source,offer_type,package,url,http_status,detail,observed_at) VALUES(?,?,?,?,?,?,?,?,?,?)",
                     (run,mid,svc,'justwatch',ot,o['package']['clearName'],o['standardWebURL'],None,
-                     f"monetizationType={mt}; availableTo={o.get('availableToTime')}; availableFrom={o.get('availableFromTime')}",D))
+                     f"package={pk}; monetizationType={mt}; availableTo={o.get('availableToTime')}; availableFrom={o.get('availableFromTime')}",D))
 po={k:v for k,v in json.load(open(f'{BASE}/overrides/pair_overrides.json')).items() if not k.startswith('_')}
 c.execute("DELETE FROM availability_obs WHERE run_id=? AND source='manual'",(run,))
 for k,v in po.items():
