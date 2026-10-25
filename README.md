@@ -7,10 +7,20 @@ Built for Emil Frojd (Mountain View, CA). It follows the same pattern as the spe
 ## Re-run / re-check
 ```bash
 cd /workspace/movies
-./run_all.sh 2026-11-24      # new dated run: re-pulls JustWatch, RT, IMDb, service pages and Reelgood, then diffs vs the previous run
+./run_all.sh 2026-11-24              # new dated run; reuses any page fetched in the last 7 days, then diffs vs the previous run
+./run_all.sh 2026-11-24 --refresh    # same, but forces live fetches of every page/API response
+python3 scripts/audience_counts.py 2026-11-24 [--refresh]   # any single stage takes --refresh too
 ./publish.sh "re-check Nov 24"
 ```
 Every stage is keyed by run date. Re-running the same date replaces that run's observations, and a new date creates a new `runs` row. `flags_and_changes.py` writes `change_events` (availability_added / availability_removed / score_change) against the previous run.
+
+## Caching and cache reuse (added 2026-10-25)
+Every lookup is persisted in `movies.db` with its source URL and checked_at timestamp, so later runs reuse it instead of re-fetching:
+- **`fetch_cache`** (one row per URL: `cache_file`, `http_status`, `checked_at`, `bytes`, `source` script, `reuse_count`, `last_reused_at`). Every GET goes through `scripts/rt_lib.get()` (RT pages, RT search, IMDb suggestion JSON, service title pages, Reelgood API, RT browse lists) and is logged here. If the URL's last HTTP 200 fetch is younger than 7 days (`MOVIES_CACHE_DAYS`, default 7) and its file still exists under `raw/`, the saved file is served (and copied into the current dated `raw/` dir) instead of hitting the site. Failed fetches are logged but never served from cache.
+- **Observation-level reuse** in `audience_counts.py`: a movie with an `ok` row in `audience_count_obs` checked within 7 days is not re-fetched; the row is copied into the current run with `reused_from_obs_id` and its original `observed_at`/URL. Re-fetched scores on those pages are stored too (`popcornmeter_seen`, `tomatometer_seen`, `critic_reviews_seen`) next to the count.
+- **Force a re-fetch** with `--refresh` on any script (or `./run_all.sh <date> --refresh`, or `MOVIES_REFRESH=1`).
+- Not cached: the JustWatch catalog (GraphQL POST in `jw_catalog.py`/`jw_supplement.py`, which must be complete each run), the IMDb ratings dataset (`imdb_ratings.py`, one daily file), and `audience_audit.py`'s NULL-Popcornmeter re-checks (deliberately live).
+- Existing captures from 2026-10-24/25 were registered by `scripts/backfill_fetch_cache.py` (one-off; checked_at = file mtime). With a 7-day window they are reused through 2026-10-31; a run on 2026-11-24 fetches fresh.
 
 ## Adding years or services
 - **Years:** change `releaseYear:{min:2025,max:2026}` in `scripts/jw_catalog.py` and the `release_year IN (2025,2026)` filter in the `v_qualifying` view.
@@ -22,6 +32,7 @@ Every stage is keyed by run date. Re-running the same date replaces that run's o
 - `movies`: keyed by RT slug. Holds release_year (rule in method.md), the IMDb/RT/JW years, runtime, IMDb type, genre_label, kid_friendly and exclude_reason.
 - `sightings`: candidate discovery per run/service/source.
 - `availability_obs`: per run × movie × service × source (`justwatch`, `official`, `reelgood`, `rt_where_to_watch`, `manual`) × offer_type (`included`, `channel_addon`, `rent`, `buy`, `bundle`, `free_ads`, `not_listed`, `coming_soon`, `unreachable`, `unknown`), with URL, HTTP status and detail.
+- `fetch_cache`: every fetched URL with its saved file and checked_at (see Caching).
 - `audience_count_obs` (r3): the RT audience rating-count bucket shown next to the Popcornmeter (band text, lower bound `band_min`, verified or all-audience, visible markup + scorecard JSON, status ok/unreadable) per run and movie, from `scripts/audience_counts.py`. Evidence claim `audience_rating_count`.
 - `score_obs`: Tomatometer, critic review count, average, certified, Popcornmeter, audience band and counts per run.
 - `evidence`: claim/value/doc_type/is_official/url/quote/retrieved_at for tomatometer, popcornmeter and release_year.

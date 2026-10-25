@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Stage 3: fetch every matched RT movie page (fresh, no cache reuse across dates) and parse scorecard + where-to-watch.
+"""Stage 3: fetch every matched RT movie page and parse scorecard + where-to-watch. Pages fetched within 7 days (fetch_cache) are reused; --refresh forces live fetches.
 Output raw/rt_pages_<date>.json keyed by RT url."""
 import json, sys, os, datetime, concurrent.futures as cf
 sys.path.insert(0, os.path.dirname(__file__)); from rt_lib import *

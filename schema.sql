@@ -125,9 +125,15 @@ CREATE TABLE IF NOT EXISTS audience_count_obs(
  obs_id INTEGER PRIMARY KEY, run_id INTEGER NOT NULL REFERENCES runs(run_id) ON DELETE CASCADE,
  movie_id INTEGER NOT NULL REFERENCES movies(movie_id),
  band TEXT, band_min INTEGER, verified_shown INTEGER, popcornmeter_seen INTEGER, markup_band TEXT, json_band TEXT,
+ tomatometer_seen INTEGER, critic_reviews_seen INTEGER,      -- scores on the same re-fetched page (cross-check vs score_obs)
+ reused_from_obs_id INTEGER,                                 -- set when copied from a <7-day-old observation instead of re-fetched
  status TEXT NOT NULL CHECK(status IN ('ok','unreadable')), detail TEXT,
  url TEXT NOT NULL, http_status INTEGER, observed_at TEXT NOT NULL,
  UNIQUE(run_id, movie_id));
+-- Fetch cache (written by scripts/rt_lib.get for every GET): last fetch per URL, its saved file and checked_at.
+-- A URL with an HTTP 200 fetch younger than CACHE_DAYS (7) is served from cache_file; --refresh / MOVIES_REFRESH=1 forces a live fetch.
+CREATE TABLE IF NOT EXISTS fetch_cache(url TEXT PRIMARY KEY, cache_file TEXT, http_status INTEGER, checked_at TEXT NOT NULL,
+ bytes INTEGER, source TEXT, last_reused_at TEXT, reuse_count INTEGER NOT NULL DEFAULT 0);
 DROP VIEW IF EXISTS v_latest_audience_count;
 CREATE VIEW v_latest_audience_count AS SELECT * FROM audience_count_obs WHERE run_id=(SELECT run_id FROM v_latest_run);
 

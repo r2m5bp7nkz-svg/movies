@@ -16,5 +16,10 @@ for tbl,needle in (('evidence','audience_rating_count'),('flags','audience_count
     cols=','.join(r[1] for r in c.execute(f'PRAGMA table_info({tbl}_old)'))
     c.execute(f'INSERT INTO {tbl}({cols}) SELECT {cols} FROM {tbl}_old'); c.execute(f'DROP TABLE {tbl}_old')
     assert c.execute(f'select count(*) from {tbl}').fetchone()[0]==n; print(tbl,'migrated',n,'rows')
-c.commit(); c.execute('PRAGMA foreign_keys=ON'); c.executescript(schema); c.commit()
+c.commit(); c.execute('PRAGMA foreign_keys=ON')
+if c.execute("select 1 from sqlite_master where name='audience_count_obs'").fetchone():
+    have={r[1] for r in c.execute('PRAGMA table_info(audience_count_obs)')}
+    for col in ('tomatometer_seen INTEGER','critic_reviews_seen INTEGER','reused_from_obs_id INTEGER'):
+        if col.split()[0] not in have: c.execute('ALTER TABLE audience_count_obs ADD COLUMN '+col); print('added',col)
+c.executescript(schema); c.commit()
 print(c.execute('PRAGMA integrity_check').fetchone(), c.execute('PRAGMA foreign_key_check').fetchall())

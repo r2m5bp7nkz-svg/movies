@@ -3,6 +3,8 @@
 set -e
 cd "$(dirname "$0")"
 D=${1:-$(date +%F)}
+# Pages/API responses fetched within the last 7 days (fetch_cache) are reused; add --refresh as 2nd arg (or MOVIES_REFRESH=1) to force live fetches.
+if [ "$2" = "--refresh" ]; then export MOVIES_REFRESH=1; fi
 python3 scripts/jw_catalog.py            # JustWatch catalog per service (writes raw/jw_<svc>_$D.json)
 python3 scripts/imdb_fetch.py $D         # IMDb year/type per candidate
 python3 scripts/rt_browse.py $D          # RT "new fresh movies on <service>" lists

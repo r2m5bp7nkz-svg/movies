@@ -28,3 +28,6 @@ Requested by Emil after reviewing v1. The v1 ranking was Tomatometer first, then
 
 ## Rule change 2026-10-25 (r3)
 Requested by Emil. A movie qualifies for the main per-service table only if, in addition to the r2 rules, RT displays **250+ audience ratings** (bucket "250+ Ratings"/"250+ Verified Ratings" or higher) alongside the Popcornmeter shown. Sorting is unchanged (Tomatometer → Popcornmeter → critic reviews) and lower-ranked qualifiers backfill each top 10. r2 qualifiers that fail only this rule are kept in `v_few_audience_ratings` and listed collapsed in the HTML report as not qualifying. Views: `v_main_r2` (old r2 set), `v_main` (r3), `v_latest_audience_count`, `v_few_audience_ratings`; `v_service_counts` gained `n_qualifying_r2` (n_qualifying is now r3).
+
+## Caching (2026-10-25)
+Every GET is logged in `fetch_cache` (URL, saved file, HTTP status, checked_at). A URL successfully fetched within the last 7 days is served from its saved capture; `--refresh` forces a live fetch. `audience_counts.py` also reuses whole `audience_count_obs` observations younger than 7 days (`reused_from_obs_id`). So a re-run within a week reflects pages as they were when first fetched; use `--refresh` for a true re-check. JustWatch catalog pulls, the IMDb dataset and the audience audit are always live.
