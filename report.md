@@ -1,27 +1,26 @@
 # Movies (first released 2025–2026) included with US streaming subscriptions
 
-**Date checked: Saturday, October 24, 2026** (America/Los_Angeles). Generated from `movies.db` run 1.
+**Date checked: Saturday, October 24, 2026; RT audience rating counts re-checked Sunday, October 25, 2026** (America/Los_Angeles). Generated from `movies.db` run 1.
 
-A movie makes a service's main table only if its Rotten Tomatoes Tomatometer is at least 80%, its Popcornmeter is at least 80% (and RT actually displays one), and it has at least 20 critic reviews. Tables are ranked by Tomatometer, ties broken by Popcornmeter, then by critic review count. Movies that clear 80% with critics but have fewer than 20 reviews, or that have no Popcornmeter yet, are listed separately under each table and are not ranked in it. IMDb ratings (out of 10, vote count in parentheses) are for information only and are never used as a filter. Critics/Audience are Tomatometer/Popcornmeter as read from each movie's own RT page, with critic review counts in parentheses.
+A movie makes a service's main table only if its Rotten Tomatoes Tomatometer is at least 80%, its Popcornmeter is at least 80% (and RT actually displays one), it has at least 20 critic reviews, and it has at least 250 RT audience ratings (RT shows "250+ Ratings" or a higher bucket, verified or all-audience, whichever RT displays with the Popcornmeter). Tables are ranked by Tomatometer, ties broken by Popcornmeter, then by critic review count. Movies that clear 80% with critics but have fewer than 20 reviews, or that have no Popcornmeter yet, or fewer than 250 audience ratings, are listed separately under each table and are not ranked in it. IMDb ratings (out of 10, vote count in parentheses) are for information only and are never used as a filter. Critics/Audience are Tomatometer/Popcornmeter as read from each movie's own RT page, with critic review counts in parentheses.
 
 Flags: ‡ Popcornmeter from only 50–99 ratings · † fewer than 20 critic reviews (side lists only) · ʸ sources disagree on the year · ◆ plan-tier note · ⏳ leaving within 45 days · ⚠ availability note · ⁱ IMDb rating from fewer than 1,000 votes.
 
 
-## Netflix: 33 qualifying movies
+## Netflix: 22 qualifying movies
 
 | # | Movie | Year | Critics | Audience | IMDb | Type of movie |
 |---|---|---|---|---|---|---|
-| 1 | [The President's Cake](https://www.rottentomatoes.com/m/the_presidents_cake) ‡ʸ | 2025 | 99% (87) | 88% | 7.5 (5,217) | Iraqi (Arabic) drama |
-| 2 | [Demon Slayer: Kimetsu no Yaiba Infinity Castle](https://www.rottentomatoes.com/m/demon_slayer_kimetsu_no_yaiba_infinity_castle) | 2025 | 98% (63) | 98% | 8.3 (88,592) | Japanese anime action fantasy |
-| 3 | [Left-Handed Girl](https://www.rottentomatoes.com/m/left_handed_girl) | 2025 | 98% (108) | 82% | 7.3 (10,147) | Taiwanese (Mandarin) family drama |
-| 4 | [The Perfect Neighbor](https://www.rottentomatoes.com/m/the_perfect_neighbor_2025) | 2025 | 98% (100) | 80% | 7.1 (34,352) | True-crime documentary |
-| 5 | [Cover-Up](https://www.rottentomatoes.com/m/cover_up_2025) | 2025 | 98% (61) | 80% | 7.4 (4,225) | Investigative-journalism documentary (Seymour Hersh) |
-| 6 | [Marty, Life Is Short](https://www.rottentomatoes.com/m/marty_life_is_short) | 2026 | 97% (37) | 91% | 7.7 (3,692) | Biographical documentary (Martin Short) |
-| 7 | [Homebound](https://www.rottentomatoes.com/m/homebound_2025) | 2025 | 97% (31) | 89% | 7.9 (14,871) | Indian (Hindi) drama |
-| 8 | [I Swear](https://www.rottentomatoes.com/m/i_swear_2025) ‡ | 2025 | 96% (138) | 98% | 8.3 (70,889) | British biographical comedy-drama |
-| 9 | [Selena y Los Dinos](https://www.rottentomatoes.com/m/selena_y_los_dinos) ‡ | 2025 | 96% (23) | 92% | 7.9 (997) ⁱ | Music documentary |
-| 10 | [Merrily We Roll Along](https://www.rottentomatoes.com/m/merrily_we_roll_along) | 2025 | 95% (61) | 95% | 7.1 (2,120) | Filmed Broadway musical |
-- ʸ The President's Cake: years differ: IMDb 2025, RT 2025, JustWatch 2026 -> using 2025 (earliest of IMDb/RT)
+| 1 | [Demon Slayer: Kimetsu no Yaiba Infinity Castle](https://www.rottentomatoes.com/m/demon_slayer_kimetsu_no_yaiba_infinity_castle) | 2025 | 98% (63) | 98% | 8.3 (88,592) | Japanese anime action fantasy |
+| 2 | [The Perfect Neighbor](https://www.rottentomatoes.com/m/the_perfect_neighbor_2025) | 2025 | 98% (100) | 80% | 7.1 (34,352) | True-crime documentary |
+| 3 | [Merrily We Roll Along](https://www.rottentomatoes.com/m/merrily_we_roll_along) | 2025 | 95% (61) | 95% | 7.1 (2,120) | Filmed Broadway musical |
+| 4 | [Sisu: Road to Revenge](https://www.rottentomatoes.com/m/sisu_road_to_revenge) | 2025 | 93% (103) | 87% | 6.7 (40,518) | Finnish WWII revenge action sequel |
+| 5 | [Heartstopper Forever](https://www.rottentomatoes.com/m/heartstopper_forever) | 2026 | 93% (44) | 85% | 6.9 (9,114) | British teen queer romance drama |
+| 6 | [Don't Say Good Luck](https://www.rottentomatoes.com/m/dont_say_good_luck) | 2026 | 93% (44) | 80% | 6.8 (9,259) | Coming-of-age high-school musical dramedy |
+| 7 | [KPop Demon Hunters](https://www.rottentomatoes.com/m/kpop_demon_hunters) | 2025 | 92% (107) | 99% | 7.4 (144,936) | Animated musical fantasy |
+| 8 | [Wake Up Dead Man: A Knives Out Mystery](https://www.rottentomatoes.com/m/wake_up_dead_man_a_knives_out_mystery) | 2025 | 92% (344) | 93% | 7.3 (263,647) | Whodunit murder mystery comedy |
+| 9 | [Downton Abbey: The Grand Finale](https://www.rottentomatoes.com/m/downton_abbey_the_grand_finale) | 2025 | 91% (143) | 95% | 7.3 (20,213) | British period drama |
+| 10 | [28 Years Later: The Bone Temple](https://www.rottentomatoes.com/m/28_years_later_the_bone_temple) | 2026 | 91% (351) | 88% | 7.2 (132,795) | Post-apocalyptic zombie horror |
 
 **Also qualifies, thin data (critics and audience both 80%+, but fewer than 20 critic reviews): 10**
 
@@ -66,23 +65,24 @@ Flags: ‡ Popcornmeter from only 50–99 ratings · † fewer than 20 critic re
 | 22 | [Raat Akeli Hai: The Bansal Murders](https://www.rottentomatoes.com/m/raat_akeli_hai_the_bansal_murders) † | 2025 | 80% (15) | — | 6.6 (5,233) | Indian (Hindi) murder mystery |
 | 23 | [Vadh 2](https://www.rottentomatoes.com/m/vadh_2) †ʸ | 2025 | 80% (10) | — | 6.8 (7,723) | Indian (Hindi) crime thriller |
 
+*Not qualifying: 11 more with critics and audience 80%+ and 20+ reviews but fewer than 250 audience ratings (The President's Cake (50+ Ratings), Left-Handed Girl (100+ Ratings), Cover-Up (100+ Ratings), Marty, Life Is Short (100+ Ratings), Homebound (100+ Ratings), I Swear (50+ Verified Ratings), Selena y Los Dinos (50+ Ratings), Train Dreams (100+ Verified Ratings), Good News (50+ Ratings), Nouvelle Vague (100+ Ratings), The AI Doc: Or How I Became an Apocaloptimist (100+ Verified Ratings)).*
+
 *Not qualifying: 18 more with critics 80%+ but audience below 80% (e.g. Kidnapped: Elizabeth Smart 100/79, A Toxic Love Story 100/64, I Am Frankelda 95/78, East of Wall 95/73).*
 
-## Amazon Prime Video: 16 qualifying movies
+## Amazon Prime Video: 12 qualifying movies
 
 | # | Movie | Year | Critics | Audience | IMDb | Type of movie |
 |---|---|---|---|---|---|---|
-| 1 | [Paul McCartney: Man on the Run](https://www.rottentomatoes.com/m/paul_mccartney_man_on_the_run) ʸ | 2025 | 100% (66) | 83% | 7.5 (3,805) | Music biography documentary |
-| 2 | [Demon Slayer: Kimetsu no Yaiba Infinity Castle](https://www.rottentomatoes.com/m/demon_slayer_kimetsu_no_yaiba_infinity_castle) | 2025 | 98% (63) | 98% | 8.3 (88,592) | Japanese anime action fantasy |
-| 3 | [Are We Good?](https://www.rottentomatoes.com/m/are_we_good) ‡ | 2025 | 97% (37) | 93% | 7.2 (583) ⁱ | Comedy documentary |
-| 4 | [Is God Is](https://www.rottentomatoes.com/m/is_god_is) | 2026 | 97% (125) | 89% | 6.5 (7,956) | Revenge thriller |
-| 5 | [The Sheep Detectives](https://www.rottentomatoes.com/m/the_sheep_detectives) | 2026 | 95% (218) | 96% | 7.4 (123,038) | Family comedy / murder mystery |
-| 6 | [Project Hail Mary](https://www.rottentomatoes.com/m/project_hail_mary) | 2026 | 95% (430) | 95% | 8.2 (584,479) | Sci-fi space adventure |
-| 7 | [One Battle After Another](https://www.rottentomatoes.com/m/one_battle_after_another) ⏳ | 2025 | 94% (448) | 85% | 7.6 (453,465) | Action thriller / dark comedy |
-| 8 | [Mr. Burton](https://www.rottentomatoes.com/m/mr_burton) | 2025 | 93% (42) | 87% | 7.1 (3,321) | Biographical drama (Richard Burton) |
-| 9 | [The Stranger](https://www.rottentomatoes.com/m/the_stranger_2025) ‡ | 2025 | 91% (91) | 80% | 7.1 (7,686) | French crime drama (Camus adaptation) |
-| 10 | [Good Boy](https://www.rottentomatoes.com/m/good_boy_2025) ⚠ʸ | 2025 | 90% (188) | 81% | 6.8 (19,688) | Haunted-house horror (dog POV) |
-- ʸ Paul McCartney: Man on the Run: years differ: IMDb 2025, RT 2026, JustWatch 2026 -> using 2025 (earliest of IMDb/RT)
+| 1 | [Demon Slayer: Kimetsu no Yaiba Infinity Castle](https://www.rottentomatoes.com/m/demon_slayer_kimetsu_no_yaiba_infinity_castle) | 2025 | 98% (63) | 98% | 8.3 (88,592) | Japanese anime action fantasy |
+| 2 | [Is God Is](https://www.rottentomatoes.com/m/is_god_is) | 2026 | 97% (125) | 89% | 6.5 (7,956) | Revenge thriller |
+| 3 | [The Sheep Detectives](https://www.rottentomatoes.com/m/the_sheep_detectives) | 2026 | 95% (218) | 96% | 7.4 (123,038) | Family comedy / murder mystery |
+| 4 | [Project Hail Mary](https://www.rottentomatoes.com/m/project_hail_mary) | 2026 | 95% (430) | 95% | 8.2 (584,479) | Sci-fi space adventure |
+| 5 | [One Battle After Another](https://www.rottentomatoes.com/m/one_battle_after_another) ⏳ | 2025 | 94% (448) | 85% | 7.6 (453,465) | Action thriller / dark comedy |
+| 6 | [Good Boy](https://www.rottentomatoes.com/m/good_boy_2025) ⚠ʸ | 2025 | 90% (188) | 81% | 6.8 (19,688) | Haunted-house horror (dog POV) |
+| 7 | [John Candy: I Like Me](https://www.rottentomatoes.com/m/john_candy_i_like_me) | 2025 | 89% (76) | 96% | 8.0 (13,019) | Comedian biography documentary |
+| 8 | [Crime 101](https://www.rottentomatoes.com/m/crime_101_2026) | 2026 | 88% (200) | 83% | 6.8 (99,251) | Heist crime thriller |
+| 9 | [Roofman](https://www.rottentomatoes.com/m/roofman) | 2025 | 87% (218) | 85% | 6.9 (90,479) | True-crime comedy-drama |
+| 10 | [Superman](https://www.rottentomatoes.com/m/superman_2025) | 2025 | 83% (509) | 90% | 7.0 (451,846) | Superhero action adventure |
 - ⏳ One Battle After Another: JustWatch: leaves Nov 18, 2026 (PT)
 - ⚠ Good Boy: Reelgood does not list it as subscription here (Reelgood subscription sources: amc_plus,directv,hoopla,hulu_plus,kanopy,philo,shudder); JustWatch + service page do
 - ʸ Good Boy: years differ: IMDb 2025, RT 2025, JustWatch 2026 -> using 2025 (earliest of IMDb/RT)
@@ -126,22 +126,24 @@ Flags: ‡ Popcornmeter from only 50–99 ratings · † fewer than 20 critic re
 | 22 | [Anything That Moves](https://www.rottentomatoes.com/m/anything_that_moves) † | 2025 | 80% (10) | — | 4.7 (209) ⁱ | Horror comedy thriller |
 | 23 | [Stalkers](https://www.rottentomatoes.com/m/stalkers_2025) † | 2025 | 80% (10) | — | 3.8 (144) ⁱ | Thriller |
 
+*Not qualifying: 4 more with critics and audience 80%+ and 20+ reviews but fewer than 250 audience ratings (Paul McCartney: Man on the Run (100+ Ratings), Are We Good? (50+ Ratings), Mr. Burton (100+ Ratings), The Stranger (50+ Ratings)).*
+
 *Not qualifying: 9 more with critics 80%+ but audience below 80% (e.g. Lesbian Space Princess 96/33, Belén 95/76, Deep Cover 90/79, Hedda 90/52).*
 
-## Hulu: 27 qualifying movies
+## Hulu: 18 qualifying movies
 
 | # | Movie | Year | Critics | Audience | IMDb | Type of movie |
 |---|---|---|---|---|---|---|
-| 1 | [Ocean with David Attenborough](https://www.rottentomatoes.com/m/ocean_with_david_attenborough) ‡ | 2025 | 100% (23) | 93% | 8.4 (5,802) | Nature documentary |
-| 2 | [Demon Slayer: Kimetsu no Yaiba Infinity Castle](https://www.rottentomatoes.com/m/demon_slayer_kimetsu_no_yaiba_infinity_castle) | 2025 | 98% (63) | 98% | 8.3 (88,592) | Japanese anime action fantasy |
-| 3 | [It Was Just an Accident](https://www.rottentomatoes.com/m/it_was_just_an_accident) ‡ | 2025 | 98% (220) | 93% | 7.4 (40,295) | Iranian revenge thriller-drama |
-| 4 | [The Secret Agent](https://www.rottentomatoes.com/m/the_secret_agent_2025) | 2025 | 98% (221) | 82% | 7.2 (64,567) | Brazilian political thriller |
-| 5 | [Oasis: Don't Look Back in Anger](https://www.rottentomatoes.com/m/oasis_dont_look_back_in_anger) | 2026 | 97% (73) | 98% | 8.0 (4,612) | Britpop music documentary |
-| 6 | [Twinless](https://www.rottentomatoes.com/m/twinless) | 2025 | 97% (149) | 94% | 7.3 (17,134) | Dark buddy comedy-drama |
-| 7 | [No Other Choice](https://www.rottentomatoes.com/m/no_other_choice) | 2025 | 97% (243) | 93% | 7.5 (77,902) | Korean black-comedy thriller |
-| 8 | [The Ugly Stepsister](https://www.rottentomatoes.com/m/the_ugly_stepsister) ‡ | 2025 | 96% (141) | 85% | 7.0 (50,040) | Norwegian body-horror fairy tale |
-| 9 | [Sentimental Value](https://www.rottentomatoes.com/m/sentimental_value) | 2025 | 95% (253) | 94% | 7.7 (92,274) | Norwegian family drama |
-| 10 | [Nirvanna the Band the Show the Movie](https://www.rottentomatoes.com/m/nirvanna_the_band_the_show_the_movie) ʸ | 2025 | 95% (128) | 94% | 7.7 (14,394) | Canadian mockumentary comedy |
+| 1 | [Demon Slayer: Kimetsu no Yaiba Infinity Castle](https://www.rottentomatoes.com/m/demon_slayer_kimetsu_no_yaiba_infinity_castle) | 2025 | 98% (63) | 98% | 8.3 (88,592) | Japanese anime action fantasy |
+| 2 | [The Secret Agent](https://www.rottentomatoes.com/m/the_secret_agent_2025) | 2025 | 98% (221) | 82% | 7.2 (64,567) | Brazilian political thriller |
+| 3 | [Oasis: Don't Look Back in Anger](https://www.rottentomatoes.com/m/oasis_dont_look_back_in_anger) | 2026 | 97% (73) | 98% | 8.0 (4,612) | Britpop music documentary |
+| 4 | [No Other Choice](https://www.rottentomatoes.com/m/no_other_choice) | 2025 | 97% (243) | 93% | 7.5 (77,902) | Korean black-comedy thriller |
+| 5 | [Sentimental Value](https://www.rottentomatoes.com/m/sentimental_value) | 2025 | 95% (253) | 94% | 7.7 (92,274) | Norwegian family drama |
+| 6 | [Nirvanna the Band the Show the Movie](https://www.rottentomatoes.com/m/nirvanna_the_band_the_show_the_movie) ʸ | 2025 | 95% (128) | 94% | 7.7 (14,394) | Canadian mockumentary comedy |
+| 7 | [One of Them Days](https://www.rottentomatoes.com/m/one_of_them_days) | 2025 | 94% (126) | 89% | 6.4 (21,133) | Buddy comedy |
+| 8 | [Predator: Killer of Killers](https://www.rottentomatoes.com/m/predator_killer_of_killers) | 2025 | 94% (111) | 87% | 7.4 (63,831) | Animated sci-fi action anthology |
+| 9 | [Companion](https://www.rottentomatoes.com/m/companion_2025) | 2025 | 93% (265) | 88% | 6.9 (194,548) | Sci-fi horror thriller |
+| 10 | [Send Help](https://www.rottentomatoes.com/m/send_help) | 2026 | 92% (303) | 86% | 6.7 (160,703) | Desert-island survival horror comedy |
 - ʸ Nirvanna the Band the Show the Movie: years differ: IMDb 2025, RT 2025, JustWatch 2026 -> using 2025 (earliest of IMDb/RT)
 
 **Critics 80%+, no audience score yet (RT displays no Popcornmeter): 11**
@@ -160,19 +162,20 @@ Flags: ‡ Popcornmeter from only 50–99 ratings · † fewer than 20 critic re
 | 10 | [Sally](https://www.rottentomatoes.com/m/sally_2025) | 2025 | 88% (32) | — | 7.3 (1,107) | Biographical documentary (Sally Ride) |
 | 11 | [Last Take: Rust and the Story of Halyna](https://www.rottentomatoes.com/m/last_take_rust_and_the_story_of_halyna) † | 2025 | 86% (14) | — | 6.7 (433) ⁱ | True-crime documentary |
 
+*Not qualifying: 9 more with critics and audience 80%+ and 20+ reviews but fewer than 250 audience ratings (Ocean with David Attenborough (50+ Ratings), It Was Just an Accident (50+ Verified Ratings), Twinless (100+ Verified Ratings), The Ugly Stepsister (50+ Verified Ratings), The Christophers (100+ Verified Ratings), The Voice of Hind Rajab (50+ Verified Ratings), Arco (100+ Verified Ratings), Sirāt (50+ Verified Ratings), The Testament of Ann Lee (100+ Verified Ratings)).*
+
 *Not qualifying: 14 more with critics 80%+ but audience below 80% (e.g. The Plague 97/66, Redux Redux 97/59, Urchin 96/64, Sovereign 95/75).*
 
-## Disney+: 7 qualifying movies (fewer than 10 qualify)
+## Disney+: 6 qualifying movies (fewer than 10 qualify)
 
 | # | Movie | Year | Critics | Audience | IMDb | Type of movie |
 |---|---|---|---|---|---|---|
-| 1 | [Jaws @ 50: The Definitive Inside Story](https://www.rottentomatoes.com/m/jaws_at_50_the_definitive_inside_story) ‡ | 2025 | 100% (25) | 95% | 7.6 (3,213) | Making-of film documentary |
-| 2 | [Hoppers](https://www.rottentomatoes.com/m/hoppers) | 2026 | 94% (234) | 93% | 7.2 (89,063) | Animated family comedy adventure |
-| 3 | [Zootopia 2](https://www.rottentomatoes.com/m/zootopia_2) | 2025 | 92% (228) | 95% | 7.3 (158,000) | Animated family buddy-cop comedy |
-| 4 | [Toy Story 5](https://www.rottentomatoes.com/m/toy_story_5) | 2026 | 92% (331) | 94% | 7.3 (102,806) | Animated family adventure |
-| 5 | [Thunderbolts*](https://www.rottentomatoes.com/m/thunderbolts) | 2025 | 88% (385) | 93% | 7.1 (310,357) | Superhero action adventure |
-| 6 | [The Fantastic Four: First Steps](https://www.rottentomatoes.com/m/the_fantastic_four_first_steps) | 2025 | 86% (408) | 90% | 6.8 (296,528) | Retro sci-fi superhero adventure |
-| 7 | [Elio](https://www.rottentomatoes.com/m/elio) | 2025 | 83% (229) | 89% | 6.6 (49,017) | Animated sci-fi family adventure |
+| 1 | [Hoppers](https://www.rottentomatoes.com/m/hoppers) | 2026 | 94% (234) | 93% | 7.2 (89,063) | Animated family comedy adventure |
+| 2 | [Zootopia 2](https://www.rottentomatoes.com/m/zootopia_2) | 2025 | 92% (228) | 95% | 7.3 (158,000) | Animated family buddy-cop comedy |
+| 3 | [Toy Story 5](https://www.rottentomatoes.com/m/toy_story_5) | 2026 | 92% (331) | 94% | 7.3 (102,806) | Animated family adventure |
+| 4 | [Thunderbolts*](https://www.rottentomatoes.com/m/thunderbolts) | 2025 | 88% (385) | 93% | 7.1 (310,357) | Superhero action adventure |
+| 5 | [The Fantastic Four: First Steps](https://www.rottentomatoes.com/m/the_fantastic_four_first_steps) | 2025 | 86% (408) | 90% | 6.8 (296,528) | Retro sci-fi superhero adventure |
+| 6 | [Elio](https://www.rottentomatoes.com/m/elio) | 2025 | 83% (229) | 89% | 6.6 (49,017) | Animated sci-fi family adventure |
 
 **Also qualifies, thin data (critics and audience both 80%+, but fewer than 20 critic reviews): 1**
 
@@ -188,22 +191,24 @@ Flags: ‡ Popcornmeter from only 50–99 ratings · † fewer than 20 critic re
 | 2 | [Frozen: The Hit Broadway Musical](https://www.rottentomatoes.com/m/frozen_the_hit_broadway_musical) † | 2025 | 83% (6) | — | 7.4 (1,608) | Filmed Broadway musical (Disney) |
 | 3 | [Pets](https://www.rottentomatoes.com/m/pets_2025) † | 2025 | 82% (11) | — | 6.8 (373) ⁱ | Animal documentary |
 
+*Not qualifying: 1 more with critics and audience 80%+ and 20+ reviews but fewer than 250 audience ratings (Jaws @ 50: The Definitive Inside Story (50+ Ratings)).*
+
 *Not qualifying: 2 more with critics 80%+ but audience below 80% (e.g. Camp Rock 3 91/40, A Very Jonas Christmas Movie 88/69).*
 
-## HBO Max: 18 qualifying movies
+## HBO Max: 13 qualifying movies
 
 | # | Movie | Year | Critics | Audience | IMDb | Type of movie |
 |---|---|---|---|---|---|---|
 | 1 | [My Mom Jayne](https://www.rottentomatoes.com/m/my_mom_jayne) | 2025 | 100% (37) | 95% | 8.3 (5,463) | Celebrity family memoir documentary |
-| 2 | [The Alabama Solution](https://www.rottentomatoes.com/m/the_alabama_solution) | 2025 | 100% (31) | 92% | 7.8 (6,785) | Prison-abuse investigative documentary |
-| 3 | [It's Never Over, Jeff Buckley](https://www.rottentomatoes.com/m/its_never_over_jeff_buckley) | 2025 | 99% (68) | 98% | 7.6 (3,461) | Music biography documentary |
-| 4 | [Pillion](https://www.rottentomatoes.com/m/pillion) | 2025 | 99% (201) | 89% | 6.9 (25,206) | Queer romantic comedy-drama |
-| 5 | [Sinners](https://www.rottentomatoes.com/m/sinners_2025) | 2025 | 97% (441) | 96% | 7.5 (535,509) | Southern gothic vampire horror |
-| 6 | [Sorry, Baby](https://www.rottentomatoes.com/m/sorry_baby) | 2025 | 97% (200) | 84% | 7.1 (26,898) | Dark-comic drama |
-| 7 | [The Invite](https://www.rottentomatoes.com/m/the_invite) | 2026 | 96% (293) | 89% | 7.4 (88,749) | Marital dinner-party comedy-drama |
-| 8 | [One Battle After Another](https://www.rottentomatoes.com/m/one_battle_after_another) | 2025 | 94% (448) | 85% | 7.6 (453,465) | Action thriller / dark comedy |
-| 9 | [Lurker](https://www.rottentomatoes.com/m/lurker) ‡ | 2025 | 94% (120) | 85% | 6.7 (7,355) | Psychological thriller |
-| 10 | [Companion](https://www.rottentomatoes.com/m/companion_2025) | 2025 | 93% (265) | 88% | 6.9 (194,548) | Sci-fi horror thriller |
+| 2 | [Pillion](https://www.rottentomatoes.com/m/pillion) | 2025 | 99% (201) | 89% | 6.9 (25,206) | Queer romantic comedy-drama |
+| 3 | [Sinners](https://www.rottentomatoes.com/m/sinners_2025) | 2025 | 97% (441) | 96% | 7.5 (535,509) | Southern gothic vampire horror |
+| 4 | [The Invite](https://www.rottentomatoes.com/m/the_invite) | 2026 | 96% (293) | 89% | 7.4 (88,749) | Marital dinner-party comedy-drama |
+| 5 | [One Battle After Another](https://www.rottentomatoes.com/m/one_battle_after_another) | 2025 | 94% (448) | 85% | 7.6 (453,465) | Action thriller / dark comedy |
+| 6 | [Companion](https://www.rottentomatoes.com/m/companion_2025) | 2025 | 93% (265) | 88% | 6.9 (194,548) | Sci-fi horror thriller |
+| 7 | [Weapons](https://www.rottentomatoes.com/m/weapons) | 2025 | 93% (400) | 85% | 7.4 (415,113) | Missing-children horror mystery |
+| 8 | [Marty Supreme](https://www.rottentomatoes.com/m/marty_supreme) | 2025 | 93% (363) | 82% | 7.5 (226,260) | Table-tennis hustler comedy-drama |
+| 9 | [Warfare](https://www.rottentomatoes.com/m/warfare) | 2025 | 92% (238) | 92% | 7.1 (118,270) | Iraq War combat drama |
+| 10 | [Final Destination Bloodlines](https://www.rottentomatoes.com/m/final_destination_bloodlines) | 2025 | 92% (235) | 86% | 6.7 (173,871) | Supernatural horror sequel |
 
 **Critics 80%+, no audience score yet (RT displays no Popcornmeter): 5**
 
@@ -215,18 +220,17 @@ Flags: ‡ Popcornmeter from only 50–99 ratings · † fewer than 20 critic re
 | 4 | [Dear Ms.: A Revolution in Print](https://www.rottentomatoes.com/m/dear_ms_a_revolution_in_print) † | 2025 | 94% (16) | — | 7.2 (220) ⁱ | Feminist-history documentary |
 | 5 | [Thoughts & Prayers](https://www.rottentomatoes.com/m/thoughts_and_prayers) † | 2025 | 90% (10) | — | 6.5 (595) ⁱ | Gun-violence documentary |
 
+*Not qualifying: 5 more with critics and audience 80%+ and 20+ reviews but fewer than 250 audience ratings (The Alabama Solution (100+ Ratings), It's Never Over, Jeff Buckley (100+ Verified Ratings), Sorry, Baby (100+ Verified Ratings), Lurker (50+ Verified Ratings), Dust Bunny (100+ Verified Ratings)).*
+
 *Not qualifying: 7 more with critics 80%+ but audience below 80% (e.g. Prime Minister 93/63, If I Had Legs I'd Kick You 92/79, Bring Her Back 89/79, Miss You, Love You 88/77).*
 
-## Apple TV+ (now "Apple TV"): 6 qualifying movies (fewer than 10 qualify)
+## Apple TV+ (now "Apple TV"): 3 qualifying movies (fewer than 10 qualify)
 
 | # | Movie | Year | Critics | Audience | IMDb | Type of movie |
 |---|---|---|---|---|---|---|
-| 1 | [Deaf President Now!](https://www.rottentomatoes.com/m/deaf_president_now) ‡ | 2025 | 100% (47) | 92% | 7.9 (953) ⁱ | Civil-rights history documentary |
-| 2 | [Come See Me in the Good Light](https://www.rottentomatoes.com/m/come_see_me_in_the_good_light) | 2025 | 100% (54) | 89% | 7.5 (3,421) | Poetry & cancer love-story documentary |
-| 3 | [Tenzing](https://www.rottentomatoes.com/m/tenzing) | 2026 | 98% (58) | 92% | 7.5 (8,017) | True-story mountaineering drama |
-| 4 | [The Lost Bus](https://www.rottentomatoes.com/m/the_lost_bus) | 2025 | 87% (140) | 95% | 6.8 (58,319) | True-story wildfire survival thriller |
-| 5 | [Highest 2 Lowest](https://www.rottentomatoes.com/m/highest_2_lowest) | 2025 | 83% (234) | 83% | 5.5 (36,106) | Kidnapping crime thriller |
-| 6 | [F1 The Movie](https://www.rottentomatoes.com/m/f1_the_movie) | 2025 | 82% (369) | 97% | 7.6 (398,440) | Racing sports drama |
+| 1 | [Tenzing](https://www.rottentomatoes.com/m/tenzing) | 2026 | 98% (58) | 92% | 7.5 (8,017) | True-story mountaineering drama |
+| 2 | [Highest 2 Lowest](https://www.rottentomatoes.com/m/highest_2_lowest) | 2025 | 83% (234) | 83% | 5.5 (36,106) | Kidnapping crime thriller |
+| 3 | [F1 The Movie](https://www.rottentomatoes.com/m/f1_the_movie) | 2025 | 82% (369) | 97% | 7.6 (398,440) | Racing sports drama |
 
 **Critics 80%+, no audience score yet (RT displays no Popcornmeter): 1**
 
@@ -234,25 +238,23 @@ Flags: ‡ Popcornmeter from only 50–99 ratings · † fewer than 20 critic re
 |---|---|---|---|---|---|---|
 | 1 | [The Last First: Winter K2](https://www.rottentomatoes.com/m/the_last_first_winter_k2) | 2026 | 100% (32) | — | 7.2 (1,713) | Mountaineering adventure documentary |
 
+*Not qualifying: 3 more with critics and audience 80%+ and 20+ reviews but fewer than 250 audience ratings (Deaf President Now! (50+ Ratings), Come See Me in the Good Light (100+ Ratings), The Lost Bus (100+ Verified Ratings)).*
+
 *Not qualifying: 2 more with critics 80%+ but audience below 80% (e.g. Stiller & Meara: Nothing Is Lost 93/78, Mayday 83/68).*
 
-## Paramount+: 10 qualifying movies
+## Paramount+: 7 qualifying movies (fewer than 10 qualify)
 
 | # | Movie | Year | Critics | Audience | IMDb | Type of movie |
 |---|---|---|---|---|---|---|
 | 1 | [EPiC: Elvis Presley in Concert](https://www.rottentomatoes.com/m/epic_elvis_presley_in_concert) ʸ | 2025 | 97% (120) | 97% | 8.1 (7,057) | Concert & music documentary |
 | 2 | [Tuner](https://www.rottentomatoes.com/m/tuner) ʸ | 2025 | 94% (191) | 94% | 7.2 (37,299) | Crime thriller drama |
 | 3 | [Billie Eilish - Hit Me Hard and Soft: The Tour (Live in 3D)](https://www.rottentomatoes.com/m/billie_eilish_hit_me_hard_and_soft_the_tour_live_in_3d) | 2026 | 92% (84) | 97% | 7.5 (3,870) | Concert film |
-| 4 | [Avatar Aang: The Last Airbender](https://www.rottentomatoes.com/m/avatar_aang_the_last_airbender) ‡ | 2026 | 90% (49) | 99% | 7.7 (31,286) | Animated fantasy adventure |
-| 5 | [Stans](https://www.rottentomatoes.com/m/stans) | 2025 | 90% (21) | 93% | 6.8 (3,200) | Music fandom documentary |
-| 6 | [Roofman](https://www.rottentomatoes.com/m/roofman) | 2025 | 87% (218) | 85% | 6.9 (90,479) | True-crime comedy-drama |
-| 7 | [The Wedding Banquet](https://www.rottentomatoes.com/m/the_wedding_banquet) ◆ | 2025 | 86% (172) | 83% | 6.3 (4,659) | Romantic comedy (LGBTQ+) |
-| 8 | [Jackass: Best and Last](https://www.rottentomatoes.com/m/jackass_best_and_last) | 2026 | 86% (107) | 82% | 6.2 (14,627) | Stunt comedy |
-| 9 | [Novocaine](https://www.rottentomatoes.com/m/novocaine_2025) | 2025 | 81% (221) | 84% | 6.5 (97,024) | Action comedy |
-| 10 | [Mission: Impossible - The Final Reckoning](https://www.rottentomatoes.com/m/mission_impossible_the_final_reckoning) | 2025 | 80% (428) | 88% | 7.1 (243,231) | Spy action thriller |
+| 4 | [Roofman](https://www.rottentomatoes.com/m/roofman) | 2025 | 87% (218) | 85% | 6.9 (90,479) | True-crime comedy-drama |
+| 5 | [Jackass: Best and Last](https://www.rottentomatoes.com/m/jackass_best_and_last) | 2026 | 86% (107) | 82% | 6.2 (14,627) | Stunt comedy |
+| 6 | [Novocaine](https://www.rottentomatoes.com/m/novocaine_2025) | 2025 | 81% (221) | 84% | 6.5 (97,024) | Action comedy |
+| 7 | [Mission: Impossible - The Final Reckoning](https://www.rottentomatoes.com/m/mission_impossible_the_final_reckoning) | 2025 | 80% (428) | 88% | 7.1 (243,231) | Spy action thriller |
 - ʸ EPiC: Elvis Presley in Concert: years differ: IMDb 2025, RT 2025, JustWatch 2026 -> using 2025 (earliest of IMDb/RT)
 - ʸ Tuner: years differ: IMDb 2025, RT 2025, JustWatch 2026 -> using 2025 (earliest of IMDb/RT)
-- ◆ The Wedding Banquet: JustWatch lists it only on Paramount+ Premium (not Essential)
 
 **Also qualifies, thin data (critics and audience both 80%+, but fewer than 20 critic reviews): 1**
 
@@ -267,23 +269,20 @@ Flags: ‡ Popcornmeter from only 50–99 ratings · † fewer than 20 critic re
 | 1 | [Sweetness](https://www.rottentomatoes.com/m/sweetness) ◆ʸ | 2025 | 88% (42) | — | 5.4 (766) ⁱ | Teen psychological thriller |
 | 2 | [The Road Between Us: The Ultimate Rescue](https://www.rottentomatoes.com/m/the_road_between_us_the_ultimate_rescue) † | 2025 | 81% (16) | — | 7.3 (372) ⁱ | War-rescue documentary |
 
+*Not qualifying: 3 more with critics and audience 80%+ and 20+ reviews but fewer than 250 audience ratings (Avatar Aang: The Last Airbender (50+ Verified Ratings), Stans (100+ Verified Ratings), The Wedding Banquet (100+ Verified Ratings)).*
+
 *Not qualifying: 4 more with critics 80%+ but audience below 80% (e.g. Wardriver 100/59, Predators 97/39, The Naked Gun 88/72, Marshmallow 83/72).*
 
-## Peacock: 6 qualifying movies (fewer than 10 qualify)
+## Peacock: 3 qualifying movies (fewer than 10 qualify)
 
 | # | Movie | Year | Critics | Audience | IMDb | Type of movie |
 |---|---|---|---|---|---|---|
-| 1 | [The Ballad of Wallis Island](https://www.rottentomatoes.com/m/the_ballad_of_wallis_island) ⏳ | 2025 | 97% (145) | 93% | 7.4 (26,371) | Music-themed British comedy-drama |
-| 2 | [Obsession](https://www.rottentomatoes.com/m/obsession_2025) ⏳ʸ | 2025 | 93% (329) | 94% | 7.8 (409,102) | Supernatural horror thriller |
-| 3 | [Finding Emily](https://www.rottentomatoes.com/m/finding_emily) | 2026 | 90% (77) | 90% | 6.9 (6,800) | Romantic comedy |
-| 4 | [Pressure](https://www.rottentomatoes.com/m/pressure_2026) ⏳ | 2026 | 89% (147) | 95% | 7.3 (40,560) | WWII historical drama |
-| 5 | [She Dances](https://www.rottentomatoes.com/m/she_dances) ‡ʸ | 2025 | 89% (27) | 86% | 6.4 (683) ⁱ | Father-daughter road comedy-drama |
-| 6 | [Girls Like Girls](https://www.rottentomatoes.com/m/girls_like_girls) | 2026 | 88% (64) | 87% | 6.3 (3,707) | Coming-of-age queer romance |
-- ⏳ The Ballad of Wallis Island: JustWatch: leaves Dec 6, 2026 (PT)
+| 1 | [Obsession](https://www.rottentomatoes.com/m/obsession_2025) ⏳ʸ | 2025 | 93% (329) | 94% | 7.8 (409,102) | Supernatural horror thriller |
+| 2 | [Pressure](https://www.rottentomatoes.com/m/pressure_2026) ⏳ | 2026 | 89% (147) | 95% | 7.3 (40,560) | WWII historical drama |
+| 3 | [Girls Like Girls](https://www.rottentomatoes.com/m/girls_like_girls) | 2026 | 88% (64) | 87% | 6.3 (3,707) | Coming-of-age queer romance |
 - ⏳ Obsession: JustWatch: leaves Nov 17, 2026 (PT)
 - ʸ Obsession: years differ: IMDb 2025, RT 2025, JustWatch 2026 -> using 2025 (earliest of IMDb/RT)
 - ⏳ Pressure: JustWatch: leaves Nov 24, 2026 (PT)
-- ʸ She Dances: years differ: IMDb 2025, RT 2025, JustWatch 2026 -> using 2025 (earliest of IMDb/RT)
 
 **Also qualifies, thin data (critics and audience both 80%+, but fewer than 20 critic reviews): 1**
 
@@ -297,6 +296,8 @@ Flags: ‡ Popcornmeter from only 50–99 ratings · † fewer than 20 critic re
 |---|---|---|---|---|---|---|
 | 1 | [It's Dorothy!](https://www.rottentomatoes.com/m/its_dorothy) † | 2025 | 91% (11) | — | 7.2 (93) ⁱ | Pop-culture documentary (Wizard of Oz) |
 
+*Not qualifying: 3 more with critics and audience 80%+ and 20+ reviews but fewer than 250 audience ratings (The Ballad of Wallis Island (100+ Verified Ratings), Finding Emily (100+ Verified Ratings), She Dances (50+ Ratings)).*
+
 *Not qualifying: 3 more with critics 80%+ but audience below 80% (e.g. Black Bag 96/70, Bridget Jones: Mad About the Boy 88/72, Drop 83/79).*
 
 ## Starz: 2 qualifying movies (fewer than 10 qualify)
@@ -309,23 +310,16 @@ Flags: ‡ Popcornmeter from only 50–99 ratings · † fewer than 20 critic re
 
 *Not qualifying: 2 more with critics 80%+ but audience below 80% (e.g. Eye for an Eye 85/64, Beast 81/74).*
 
-## MGM+: 6 qualifying movies (fewer than 10 qualify)
+## MGM+: 5 qualifying movies (fewer than 10 qualify)
 
 | # | Movie | Year | Critics | Audience | IMDb | Type of movie |
 |---|---|---|---|---|---|---|
 | 1 | [Is God Is](https://www.rottentomatoes.com/m/is_god_is) | 2026 | 97% (125) | 89% | 6.5 (7,956) | Revenge thriller |
 | 2 | [Project Hail Mary](https://www.rottentomatoes.com/m/project_hail_mary) | 2026 | 95% (430) | 95% | 8.2 (584,479) | Sci-fi space adventure |
-| 3 | [She Rides Shotgun](https://www.rottentomatoes.com/m/she_rides_shotgun) ‡ | 2025 | 87% (76) | 92% | 6.5 (15,463) | Crime action thriller |
-| 4 | [Roofman](https://www.rottentomatoes.com/m/roofman) | 2025 | 87% (218) | 85% | 6.9 (90,479) | True-crime comedy-drama |
-| 5 | [Novocaine](https://www.rottentomatoes.com/m/novocaine_2025) | 2025 | 81% (221) | 84% | 6.5 (97,024) | Action comedy |
-| 6 | [Mission: Impossible - The Final Reckoning](https://www.rottentomatoes.com/m/mission_impossible_the_final_reckoning) | 2025 | 80% (428) | 88% | 7.1 (243,231) | Spy action thriller |
+| 3 | [Roofman](https://www.rottentomatoes.com/m/roofman) | 2025 | 87% (218) | 85% | 6.9 (90,479) | True-crime comedy-drama |
+| 4 | [Novocaine](https://www.rottentomatoes.com/m/novocaine_2025) | 2025 | 81% (221) | 84% | 6.5 (97,024) | Action comedy |
+| 5 | [Mission: Impossible - The Final Reckoning](https://www.rottentomatoes.com/m/mission_impossible_the_final_reckoning) | 2025 | 80% (428) | 88% | 7.1 (243,231) | Spy action thriller |
+
+*Not qualifying: 1 more with critics and audience 80%+ and 20+ reviews but fewer than 250 audience ratings (She Rides Shotgun (50+ Verified Ratings)).*
 
 *Not qualifying: 3 more with critics 80%+ but audience below 80% (e.g. Preparation for the Next Life 97/56, The Naked Gun 88/72, Cold Storage 80/75).*
-
-## Five recommendations
-
-1. **[Sinners](https://www.rottentomatoes.com/m/sinners_2025)** (2025; 97% / 96%; IMDb 7.5 (535,509); on HBO Max): Ryan Coogler's Jim Crow-era vampire epic, with Michael B. Jordan playing twin brothers. It's a blues musical, a gangster film and a horror movie at once, and it's one of the few 2025 films that both critics and audiences loved (97/96). For the adults only: rated R and gory.
-2. **[Project Hail Mary](https://www.rottentomatoes.com/m/project_hail_mary)** (2026; 95% / 95%; IMDb 8.2 (584,479); on MGM+, Amazon Prime Video): Ryan Gosling as a science teacher who wakes up alone on a spaceship and has to save Earth. It's a funny, warm, problem-solving space adventure built around a lovable alien friendship (95/95). PG-13, so it works for older kids but is a bit intense for a 4-year-old.
-3. **[Hoppers](https://www.rottentomatoes.com/m/hoppers)** (2026; 94% / 93%; IMDb 7.2 (89,063); on Disney+): Pixar's original comedy about a girl who 'hops' her mind into a robotic beaver to talk to animals. It's fresh, very funny, and has an eco-minded heart (94/93). Rated PG, and the best pick here for a 4- and 6-year-old.
-4. **[The Sheep Detectives](https://www.rottentomatoes.com/m/the_sheep_detectives)** (2026; 95% / 96%; IMDb 7.4 (123,038); on Amazon Prime Video): A family comedy and murder mystery in which a flock of sheep set out to solve their shepherd's death. It's clever, warm and silly at once, and both critics and audiences love it (95/96, from 218 reviews). Rated PG: the 6-year-old should love it, and it's gentle enough to try with the 4-year-old. Included with Prime Video. Alternate for the adults: The Ballad of Wallis Island (Peacock, 97/93; leaves Dec 6).
-5. **[KPop Demon Hunters](https://www.rottentomatoes.com/m/kpop_demon_hunters)** (2025; 92% / 99%; IMDb 7.4 (144,936); on Netflix): A K-pop girl group who secretly fight demons. It has kinetic animation and genuinely catchy songs, and its Popcornmeter (99) is tied for the highest of any qualifier, with a Tomatometer of 92. Rated PG; the 6-year-old will probably love it, and the 4-year-old may find the demons a little scary.

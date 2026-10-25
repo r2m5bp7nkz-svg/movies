@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS score_obs(
 CREATE TABLE IF NOT EXISTS evidence(
  evidence_id INTEGER PRIMARY KEY, movie_id INTEGER NOT NULL REFERENCES movies(movie_id) ON DELETE CASCADE,
  run_id INTEGER REFERENCES runs(run_id),
- claim TEXT NOT NULL CHECK(claim IN ('tomatometer','popcornmeter','availability','release_year','runtime','genre','type','rating')),
+ claim TEXT NOT NULL CHECK(claim IN ('tomatometer','popcornmeter','audience_rating_count','availability','release_year','runtime','genre','type','rating')),
  service_code TEXT, value TEXT,
  doc_type TEXT NOT NULL CHECK(doc_type IN ('rt_page','service_page','justwatch_api','reelgood_api','imdb','rt_search','manual')),
  is_official INTEGER NOT NULL CHECK(is_official IN (0,1)), url TEXT, quote TEXT, retrieved_at TEXT,
@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS sources_checked(
 CREATE TABLE IF NOT EXISTS flags(
  flag_id INTEGER PRIMARY KEY, run_id INTEGER NOT NULL REFERENCES runs(run_id) ON DELETE CASCADE,
  movie_id INTEGER NOT NULL REFERENCES movies(movie_id), service_code TEXT,
- flag_type TEXT NOT NULL CHECK(flag_type IN ('few_critic_reviews','few_audience_ratings','availability_conflict','year_conflict','official_unverified','title_match_check','tier_note','leaving_soon')),
+ flag_type TEXT NOT NULL CHECK(flag_type IN ('few_critic_reviews','few_audience_ratings','availability_conflict','year_conflict','official_unverified','title_match_check','tier_note','leaving_soon','audience_count_unreadable')),
  detail TEXT, UNIQUE(run_id, movie_id, service_code, flag_type));
 
 CREATE TABLE IF NOT EXISTS change_events(
@@ -118,6 +118,19 @@ CREATE VIEW v_included AS
  FROM v_availability v
  WHERE jw_included=1 AND official_negative=0 AND (official_included=1 OR (official_unclear=1 AND (rg_included=1 OR rt_included=1)));
 
+-- Rule r3 (2026-10-25): RT audience rating-count bucket shown next to the displayed Popcornmeter (scripts/audience_counts.py).
+-- band = the text RT shows ("250+ Ratings", "1,000+ Verified Ratings", ...); band_min = its lower bound (never an estimate).
+-- status 'unreadable' => band_min NULL, flagged audience_count_unreadable, excluded from the main tables.
+CREATE TABLE IF NOT EXISTS audience_count_obs(
+ obs_id INTEGER PRIMARY KEY, run_id INTEGER NOT NULL REFERENCES runs(run_id) ON DELETE CASCADE,
+ movie_id INTEGER NOT NULL REFERENCES movies(movie_id),
+ band TEXT, band_min INTEGER, verified_shown INTEGER, popcornmeter_seen INTEGER, markup_band TEXT, json_band TEXT,
+ status TEXT NOT NULL CHECK(status IN ('ok','unreadable')), detail TEXT,
+ url TEXT NOT NULL, http_status INTEGER, observed_at TEXT NOT NULL,
+ UNIQUE(run_id, movie_id));
+DROP VIEW IF EXISTS v_latest_audience_count;
+CREATE VIEW v_latest_audience_count AS SELECT * FROM audience_count_obs WHERE run_id=(SELECT run_id FROM v_latest_run);
+
 DROP VIEW IF EXISTS v_qualifying;
 CREATE VIEW v_qualifying AS
  SELECT i.service_code, m.movie_id, m.title, m.release_year, m.rt_slug, m.genre_label, m.kid_friendly,
@@ -131,7 +144,16 @@ DROP VIEW IF EXISTS v_ranked;
 DROP VIEW IF EXISTS v_top10;
 DROP VIEW IF EXISTS v_top10_min20;
 DROP VIEW IF EXISTS v_main;
-CREATE VIEW v_main AS SELECT * FROM v_qualifying WHERE popcornmeter>=80 AND critic_reviews>=20;
+DROP VIEW IF EXISTS v_main_r2;
+DROP VIEW IF EXISTS v_few_audience_ratings;
+CREATE VIEW v_main_r2 AS SELECT * FROM v_qualifying WHERE popcornmeter>=80 AND critic_reviews>=20;   -- r2 candidates (audited by audience_counts.py)
+-- Rule change 2026-10-25 (r3): also >=250 RT audience ratings (bucket "250+ Ratings"/"250+ Verified Ratings" or higher, as displayed).
+CREATE VIEW v_main AS SELECT q.*, a.band AS audience_count_band, a.band_min AS audience_count_min
+ FROM v_main_r2 q JOIN v_latest_audience_count a USING(movie_id) WHERE a.status='ok' AND a.band_min>=250;
+-- r2 candidates removed by the 250 rule (or with an unreadable count): not ranked
+CREATE VIEW v_few_audience_ratings AS SELECT q.*, a.band AS audience_count_band, a.band_min AS audience_count_min, a.status AS audience_count_status,
+  ROW_NUMBER() OVER (PARTITION BY service_code ORDER BY tomatometer DESC, popcornmeter DESC, critic_reviews DESC, title) AS rnk
+ FROM v_main_r2 q LEFT JOIN v_latest_audience_count a USING(movie_id) WHERE a.movie_id IS NULL OR a.status<>'ok' OR a.band_min<250;
 CREATE VIEW v_ranked AS
  SELECT q.*, ROW_NUMBER() OVER (PARTITION BY service_code ORDER BY tomatometer DESC, popcornmeter DESC, critic_reviews DESC, title) AS rnk
  FROM v_main q;
@@ -148,7 +170,8 @@ CREATE VIEW v_audience_below80 AS SELECT q.*, ROW_NUMBER() OVER (PARTITION BY se
  FROM v_qualifying q WHERE popcornmeter<80;                                   -- critics 80%+, audience below 80%: does not qualify
 DROP VIEW IF EXISTS v_service_counts;
 CREATE VIEW v_service_counts AS SELECT service_code,
-  SUM(popcornmeter>=80 AND critic_reviews>=20) AS n_qualifying,
+  SUM(popcornmeter>=80 AND critic_reviews>=20 AND movie_id IN (SELECT movie_id FROM v_latest_audience_count WHERE status='ok' AND band_min>=250)) AS n_qualifying,
+  SUM(popcornmeter>=80 AND critic_reviews>=20) AS n_qualifying_r2,
   SUM(popcornmeter>=80 AND critic_reviews<20) AS n_thin,
   SUM(popcornmeter IS NULL) AS n_no_audience,
   SUM(popcornmeter<80) AS n_audience_below80,

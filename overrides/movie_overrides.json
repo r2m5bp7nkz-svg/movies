@@ -557,5 +557,53 @@
  },
  "stalkers_2025": {
   "genre_label": "Thriller"
+ },
+ "weapons": {
+  "genre_label": "missing-children horror mystery"
+ },
+ "marty_supreme": {
+  "genre_label": "table-tennis hustler comedy-drama"
+ },
+ "warfare": {
+  "genre_label": "Iraq War combat drama"
+ },
+ "final_destination_bloodlines": {
+  "genre_label": "supernatural horror sequel"
+ },
+ "one_of_them_days": {
+  "genre_label": "buddy comedy"
+ },
+ "predator_killer_of_killers": {
+  "genre_label": "animated sci-fi action anthology"
+ },
+ "send_help": {
+  "genre_label": "desert-island survival horror comedy"
+ },
+ "sisu_road_to_revenge": {
+  "genre_label": "Finnish WWII revenge action sequel"
+ },
+ "heartstopper_forever": {
+  "genre_label": "British teen queer romance drama"
+ },
+ "dont_say_good_luck": {
+  "genre_label": "coming-of-age high-school musical dramedy"
+ },
+ "wake_up_dead_man_a_knives_out_mystery": {
+  "genre_label": "whodunit murder mystery comedy"
+ },
+ "downton_abbey_the_grand_finale": {
+  "genre_label": "British period drama"
+ },
+ "28_years_later_the_bone_temple": {
+  "genre_label": "post-apocalyptic zombie horror"
+ },
+ "john_candy_i_like_me": {
+  "genre_label": "comedian biography documentary"
+ },
+ "crime_101_2026": {
+  "genre_label": "heist crime thriller"
+ },
+ "superman_2025": {
+  "genre_label": "superhero action adventure"
  }
 }

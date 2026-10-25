@@ -5,6 +5,8 @@ sys.path.insert(0, os.path.dirname(__file__)); from common import *
 c=connect()
 run=c.execute("SELECT * FROM runs ORDER BY run_id DESC LIMIT 1").fetchone()
 D=run['run_date']; R=run['run_id']
+AC=c.execute("SELECT MAX(substr(observed_at,1,10)) FROM audience_count_obs WHERE run_id=?",(R,)).fetchone()[0]
+CHK=f"{datetime.date.fromisoformat(D):%A, %B %-d, %Y}"+(f"; RT audience rating counts re-checked {datetime.date.fromisoformat(AC):%A, %B %-d, %Y}" if AC and AC!=D else "")
 svcs=[(r['service_code'],r['name']) for r in c.execute("SELECT * FROM services")]
 order=[s for s,_,_ in SERVICES]; svcs.sort(key=lambda x:order.index(x[0]))
 FLAG_SYM={'few_critic_reviews':'†','few_audience_ratings':'‡','availability_conflict':'⚠','year_conflict':'ʸ','tier_note':'◆','leaving_soon':'⏳','official_unverified':'?'}
@@ -18,12 +20,12 @@ def imdb(mid):
     if not r or r['rating'] is None: return '—', False
     return f"{r['rating']:.1f} ({r['votes']:,})", r['votes']<1000
 RULE=("A movie makes a service's main table only if its Rotten Tomatoes Tomatometer is at least 80%, its Popcornmeter is at least 80% (and RT actually displays one), "
-      "and it has at least 20 critic reviews. Tables are ranked by Tomatometer, ties broken by Popcornmeter, then by critic review count. "
-      "Movies that clear 80% with critics but have fewer than 20 reviews, or that have no Popcornmeter yet, are listed separately under each table and are not ranked in it. "
+      "it has at least 20 critic reviews, and it has at least 250 RT audience ratings (RT shows \"250+ Ratings\" or a higher bucket, verified or all-audience, whichever RT displays with the Popcornmeter). Tables are ranked by Tomatometer, ties broken by Popcornmeter, then by critic review count. "
+      "Movies that clear 80% with critics but have fewer than 20 reviews, or that have no Popcornmeter yet, or fewer than 250 audience ratings, are listed separately under each table and are not ranked in it. "
       "IMDb ratings (out of 10, vote count in parentheses) are for information only and are never used as a filter.")
 FL=("Flags: ‡ Popcornmeter from only 50–99 ratings · † fewer than 20 critic reviews (side lists only) · ʸ sources disagree on the year · ◆ plan-tier note · "
     "⏳ leaving within 45 days · ⚠ availability note · ⁱ IMDb rating from fewer than 1,000 votes.")
-md=[f"# Movies (first released 2025–2026) included with US streaming subscriptions\n\n**Date checked: {datetime.date.fromisoformat(D):%A, %B %-d, %Y}** (America/Los_Angeles). Generated from `movies.db` run {R}.\n",
+md=[f"# Movies (first released 2025–2026) included with US streaming subscriptions\n\n**Date checked: {CHK}** (America/Los_Angeles). Generated from `movies.db` run {R}.\n",
     RULE+" Critics/Audience are Tomatometer/Popcornmeter as read from each movie's own RT page, with critic review counts in parentheses.\n", FL+"\n"]
 H=[]
 H.append(f"""<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -35,7 +37,7 @@ table.side{{font-size:.85em;color:#333}} .flag{{color:#b45309;font-size:.85em}} 
 .note{{background:#fff8e6;border-left:4px solid #f0b429;padding:8px 12px;margin:10px 0}} details{{margin:8px 0}} small{{color:#666}}
 </style></head><body>
 <h1>Movies first released in 2025–2026 that are included with US streaming subscriptions</h1>
-<p><b>Date checked: {datetime.date.fromisoformat(D):%A, %B %-d, %Y}</b> (America/Los_Angeles) · for Emil Frojd (Mountain View, CA) · generated from <code>movies.db</code> (run {R}).</p>
+<p><b>Date checked: {CHK}</b> (America/Los_Angeles) · for Emil Frojd (Mountain View, CA) · generated from <code>movies.db</code> (run {R}).</p>
 <div class="note"><b>How to read this:</b> {html.escape(RULE)}
 Both RT scores were read from each movie's own RT page today; where the Popcornmeter is missing, RT's page really shows none (checked in the scorecard markup, the embedded JSON and the audience-reviews page).
 Availability required two things: JustWatch lists the movie as included with the subscription (FLATRATE on the service's own package) <i>and</i> the service's own public title page confirms it. Reelgood and RT's "where to watch" were used as further cross-checks.
@@ -74,20 +76,14 @@ for svc,name in svcs:
         if not side: continue
         md.append(f"\n**{label}: {len(side)}**\n\n{MDH}"); [md.append(mdrow(r,svc,r['rnk'])) for r in side]
         H.append(f"<h3>{html.escape(label)}: {len(side)}</h3><table class=side>{TH}"+''.join(hrow(r,svc,r['rnk'],True) for r in side)+"</table>")
+    few=rows('v_few_audience_ratings',svc)
+    if few:
+        md.append(f"\n*Not qualifying: {len(few)} more with critics and audience 80%+ and 20+ reviews but fewer than 250 audience ratings ({', '.join(r['title']+' ('+(r['audience_count_band'] or 'count unreadable')+')' for r in few)}).*")
+        H.append(f"<details><summary>Critics and audience 80%+ with 20+ reviews, but fewer than 250 RT audience ratings, so not qualifying: {len(few)}</summary><table class=side>{TH}"+''.join(hrow(r,svc,r['rnk'],True) for r in few)+"</table></details>")
     below=rows('v_audience_below80',svc)
     if below:
         md.append(f"\n*Not qualifying: {len(below)} more with critics 80%+ but audience below 80% (e.g. {', '.join(r['title']+' '+str(r['tomatometer'])+'/'+str(r['popcornmeter']) for r in below[:4])}).*")
         H.append(f"<details><summary>Critics 80%+ but Popcornmeter below 80%, so not qualifying: {len(below)}</summary><table class=side>{TH}"+''.join(hrow(r,svc,r['rnk'],True) for r in below)+"</table></details>")
-# recommendations
-recs=json.load(open(f'{BASE}/overrides/recommendations.json'))
-md.append("\n## Five recommendations\n"); H.append("<h2>Five recommendations</h2><ol>")
-for i,rc in enumerate(recs,1):
-    m=c.execute("SELECT m.movie_id,m.title,m.release_year,s.tomatometer,s.popcornmeter,s.critic_reviews,m.kid_friendly FROM movies m JOIN v_latest_scores s USING(movie_id) WHERE rt_slug=?",(rc['slug'],)).fetchone()
-    assert m['tomatometer']>=80 and (m['popcornmeter'] or 0)>=80 and m['critic_reviews']>=20, rc['slug']
-    where=', '.join(dict(svcs)[r[0]] for r in c.execute("SELECT service_code FROM v_main WHERE rt_slug=?",(rc['slug'],)))
-    md.append(f"{i}. **[{m['title']}](https://www.rottentomatoes.com/m/{rc['slug']})** ({m['release_year']}; {m['tomatometer']}% / {pct(m['popcornmeter'])}; IMDb {imdb(m['movie_id'])[0]}; on {where}): {rc['why']}")
-    H.append(f"<li><b><a href='https://www.rottentomatoes.com/m/{rc['slug']}'>{html.escape(m['title'])}</a></b> ({m['release_year']}; {m['tomatometer']}% / {pct(m['popcornmeter'])}; IMDb {imdb(m['movie_id'])[0]}; on {html.escape(where)}): {html.escape(rc['why'])}</li>")
-H.append("</ol>")
 # method + exclusions
 nsrc=c.execute("SELECT COUNT(*) FROM sources_checked WHERE run_id=?",(R,)).fetchone()[0]
 ncand=c.execute("SELECT COUNT(DISTINCT raw_title||raw_year) FROM sightings WHERE run_id=?",(R,)).fetchone()[0]
@@ -97,7 +93,7 @@ neg=c.execute("""SELECT a.service_code,a.offer_type,COUNT(*) FROM availability_o
  AND a.offer_type NOT IN ('included') AND m.exclude_reason IS NULL AND s.tomatometer>=80 GROUP BY 1,2""",(R,)).fetchall()
 H.append(f"""<h2>Method and coverage</h2><ul>
 <li><b>Discovery:</b> the full JustWatch US catalog of 2025–2026 movies for each service's own subscription package ({ncand} distinct titles), plus Rotten Tomatoes' "new fresh movies on &lt;service&gt;" lists, each looked up again on JustWatch. RT has no Starz or MGM+ list.</li>
-<li><b>Scores:</b> {nrt} RT movie pages were fetched and parsed today, using the scorecard JSON (Tomatometer, critic review count, Popcornmeter, rating band). If RT shows no Popcornmeter, the table shows "—". Every such movie was re-checked by <code>audience_audit.py</code> (scorecard markup, embedded JSON, trailing-slash variant, audience-reviews page, RT API probes) and the evidence is stored.</li><li><b>IMDb:</b> user rating and vote count from IMDb's official daily ratings dataset (title.ratings.tsv.gz), which carries the same numbers as each title page. The pages themselves show scripted clients a human-verification wall. Informational only.</li>
+<li><b>Scores:</b> {nrt} RT movie pages were fetched and parsed today, using the scorecard JSON (Tomatometer, critic review count, Popcornmeter, rating band). The audience rating-count bucket shown next to the Popcornmeter was re-read from every r2 candidate's page by <code>audience_counts.py</code> (visible scorecard text and scorecard JSON must agree; never estimated). If RT shows no Popcornmeter, the table shows "—". Every such movie was re-checked by <code>audience_audit.py</code> (scorecard markup, embedded JSON, trailing-slash variant, audience-reviews page, RT API probes) and the evidence is stored.</li><li><b>IMDb:</b> user rating and vote count from IMDb's official daily ratings dataset (title.ratings.tsv.gz), which carries the same numbers as each title page. The pages themselves show scripted clients a human-verification wall. Informational only.</li>
 <li><b>Year rule:</b> the earliest of the IMDb year and the RT year, i.e. the first release, festivals included. Streaming dates are never used. Disagreements are flagged ʸ.</li>
 <li><b>Not films:</b> IMDb types short, TV short, TV special (stand-up, concerts, live broadcasts), episodes and series are excluded, as is anything 40 minutes or shorter.</li>
 <li><b>Availability:</b> JustWatch FLATRATE on the service's own package, confirmed on the service's own title page. Prime pages were read through Amazon's entitlement message, and "Subscribe to &lt;channel&gt;", "rent or buy" and "Watch for free" (ads) were all rejected. Peacock was checked through its public watch-online page. Reelgood and RT where-to-watch are cross-checks. {nsrc} source URLs were logged.</li>
