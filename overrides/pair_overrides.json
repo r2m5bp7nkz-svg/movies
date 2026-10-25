@@ -1,0 +1,3 @@
+{"_note":"Reviewed (movie, service) availability overrides. offer_type 'bundle' = treated as Hulu-in-Disney+/bundle access, not the service's own catalog.",
+ "oasis_dont_look_back_in_anger|disney": {"offer_type":"bundle","detail":"JustWatch's Disney+ link resolves to an extras entity ('Exclusive Bonus Scene 2 | Family Is Different'), not the film; title is a Hulu listing and RT lists 'Disney+, Hulu'. Could be Hulu-in-Disney+ bundle access, so it is left out of the Disney+ table and kept under Hulu."}
+}

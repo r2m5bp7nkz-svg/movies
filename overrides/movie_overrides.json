@@ -1,0 +1,308 @@
+{
+ "_note": "Per-movie reviewed values keyed by RT slug: exclude_reason, genre_label, kid_friendly, notes.",
+ "gary_2026": {
+  "exclude_reason": "Hulu's own listing files it under /series/ (59 min); not clearly a feature film"
+ },
+ "color_theories_by_julio_torres": {
+  "exclude_reason": "stand-up/comedy special (RT genre 'Stand-Up'), not a film"
+ },
+ "come_see_me_in_the_good_light": {
+  "genre_label": "poetry & cancer love-story documentary"
+ },
+ "deaf_president_now": {
+  "genre_label": "civil-rights history documentary"
+ },
+ "the_last_first_winter_k2": {
+  "genre_label": "mountaineering adventure documentary"
+ },
+ "tenzing": {
+  "genre_label": "true-story mountaineering drama",
+  "kid_friendly": "older kids (PG)"
+ },
+ "stiller_and_meara_nothing_is_lost": {
+  "genre_label": "showbiz family documentary"
+ },
+ "the_lost_bus": {
+  "genre_label": "true-story wildfire survival thriller"
+ },
+ "highest_2_lowest": {
+  "genre_label": "kidnapping crime thriller"
+ },
+ "mayday_2026": {
+  "genre_label": "spy action comedy"
+ },
+ "f1_the_movie": {
+  "genre_label": "racing sports drama",
+  "kid_friendly": "older kids (PG-13)"
+ },
+ "jaws_at_50_the_definitive_inside_story": {
+  "genre_label": "making-of film documentary"
+ },
+ "disneyland_handcrafted": {
+  "genre_label": "theme-park history documentary",
+  "kid_friendly": "yes (G)"
+ },
+ "hoppers": {
+  "genre_label": "animated family comedy adventure",
+  "kid_friendly": "yes (PG)"
+ },
+ "toy_story_5": {
+  "genre_label": "animated family adventure",
+  "kid_friendly": "yes (PG)"
+ },
+ "zootopia_2": {
+  "genre_label": "animated family buddy-cop comedy",
+  "kid_friendly": "yes (PG)"
+ },
+ "time_and_water": {
+  "genre_label": "Icelandic climate & memoir documentary",
+  "kid_friendly": "yes (PG)"
+ },
+ "camp_rock_3": {
+  "genre_label": "musical teen comedy",
+  "kid_friendly": "yes (G)"
+ },
+ "thunderbolts": {
+  "genre_label": "superhero action adventure"
+ },
+ "a_very_jonas_christmas_movie": {
+  "genre_label": "holiday musical comedy",
+  "kid_friendly": "yes (PG)"
+ },
+ "the_fantastic_four_first_steps": {
+  "genre_label": "retro sci-fi superhero adventure",
+  "kid_friendly": "older kids (PG-13)"
+ },
+ "elio": {
+  "genre_label": "animated sci-fi family adventure",
+  "kid_friendly": "yes (PG)"
+ },
+ "my_mom_jayne": {
+  "genre_label": "celebrity family memoir documentary"
+ },
+ "the_alabama_solution": {
+  "genre_label": "prison-abuse investigative documentary"
+ },
+ "earth_wind_and_fire_to_be_celestial_vs_thats_the_weight_of_the_world": {
+  "genre_label": "music documentary"
+ },
+ "bang_my_box_the_robin_byrd_story": {
+  "genre_label": "TV-history biographical documentary"
+ },
+ "surviving_ohio_state": {
+  "genre_label": "sports abuse-scandal documentary"
+ },
+ "pillion": {
+  "genre_label": "queer romantic comedy-drama"
+ },
+ "its_never_over_jeff_buckley": {
+  "genre_label": "music biography documentary"
+ },
+ "sinners_2025": {
+  "genre_label": "Southern gothic vampire horror"
+ },
+ "sorry_baby": {
+  "genre_label": "dark-comic drama"
+ },
+ "the_invite": {
+  "genre_label": "marital dinner-party comedy-drama"
+ },
+ "ocean_with_david_attenborough": {
+  "genre_label": "nature documentary",
+  "kid_friendly": "yes (PG)"
+ },
+ "love_and_war_2025": {
+  "genre_label": "war-photography documentary"
+ },
+ "lilith_fair_building_a_mystery": {
+  "genre_label": "music festival documentary"
+ },
+ "barbara_walters_tell_me_everything": {
+  "genre_label": "journalism biography documentary"
+ },
+ "the_secret_agent_2025": {
+  "genre_label": "Brazilian political thriller"
+ },
+ "it_was_just_an_accident": {
+  "genre_label": "Iranian revenge thriller-drama"
+ },
+ "demon_slayer_kimetsu_no_yaiba_infinity_castle": {
+  "genre_label": "Japanese anime action fantasy"
+ },
+ "ghost_elephants": {
+  "genre_label": "wildlife expedition documentary",
+  "kid_friendly": "older kids (PG-13)"
+ },
+ "no_other_choice": {
+  "genre_label": "Korean black-comedy thriller"
+ },
+ "twinless": {
+  "genre_label": "dark buddy comedy-drama"
+ },
+ "is_god_is": {
+  "genre_label": "revenge thriller"
+ },
+ "preparation_for_the_next_life": {
+  "genre_label": "immigrant romance drama"
+ },
+ "project_hail_mary": {
+  "genre_label": "sci-fi space adventure",
+  "kid_friendly": "older kids (PG-13)"
+ },
+ "the_naked_gun_2025": {
+  "genre_label": "spoof cop comedy"
+ },
+ "roofman": {
+  "genre_label": "true-crime comedy-drama"
+ },
+ "she_rides_shotgun": {
+  "genre_label": "crime action thriller"
+ },
+ "novocaine_2025": {
+  "genre_label": "action comedy"
+ },
+ "mission_impossible_the_final_reckoning": {
+  "genre_label": "spy action thriller"
+ },
+ "cold_storage_2026": {
+  "genre_label": "sci-fi horror comedy"
+ },
+ "teenage_wasteland": {
+  "genre_label": "environmental-conspiracy documentary"
+ },
+ "100_meters_2025": {
+  "genre_label": "Japanese anime sports drama"
+ },
+ "a_toxic_love_story": {
+  "genre_label": "true-crime documentary"
+ },
+ "bts_the_return": {
+  "genre_label": "K-pop music documentary"
+ },
+ "baahubali_the_epic": {
+  "genre_label": "Indian (Telugu) epic action fantasy"
+ },
+ "the_rise_of_the_red_hot_chili_peppers": {
+  "genre_label": "rock-band music documentary"
+ },
+ "kidnapped_elizabeth_smart": {
+  "genre_label": "true-crime documentary"
+ },
+ "chris_and_martina_the_final_set": {
+  "genre_label": "tennis sports documentary"
+ },
+ "grenfell_uncovered": {
+  "genre_label": "disaster investigative documentary"
+ },
+ "who_killed_the_montreal_expos": {
+  "genre_label": "baseball sports documentary"
+ },
+ "wardriver": {
+  "genre_label": "hacker heist thriller"
+ },
+ "epic_elvis_presley_in_concert": {
+  "genre_label": "concert & music documentary"
+ },
+ "predators": {
+  "genre_label": "true-crime media documentary"
+ },
+ "tuner": {
+  "genre_label": "crime thriller drama"
+ },
+ "billie_eilish_hit_me_hard_and_soft_the_tour_live_in_3d": {
+  "genre_label": "concert film",
+  "kid_friendly": "older kids (PG-13)"
+ },
+ "dora_and_the_search_for_sol_dorado": {
+  "genre_label": "live-action family jungle adventure",
+  "kid_friendly": "yes (PG)"
+ },
+ "avatar_aang_the_last_airbender": {
+  "genre_label": "animated fantasy adventure",
+  "kid_friendly": "yes (PG)"
+ },
+ "stans": {
+  "genre_label": "music fandom documentary"
+ },
+ "sweetness": {
+  "genre_label": "teen psychological thriller"
+ },
+ "the_ballad_of_wallis_island": {
+  "genre_label": "music-themed British comedy-drama"
+ },
+ "black_bag": {
+  "genre_label": "spy thriller"
+ },
+ "obsession_2025": {
+  "genre_label": "supernatural horror thriller"
+ },
+ "grow_2025": {
+  "genre_label": "family comedy",
+  "kid_friendly": "yes (PG)"
+ },
+ "its_dorothy": {
+  "genre_label": "pop-culture documentary (Wizard of Oz)"
+ },
+ "finding_emily": {
+  "genre_label": "romantic comedy"
+ },
+ "pressure_2026": {
+  "genre_label": "WWII historical drama"
+ },
+ "she_dances": {
+  "genre_label": "father-daughter road comedy-drama"
+ },
+ "bridget_jones_4_mad_about_the_boy": {
+  "genre_label": "romantic comedy"
+ },
+ "girls_like_girls": {
+  "genre_label": "coming-of-age queer romance"
+ },
+ "paul_mccartney_man_on_the_run": {
+  "genre_label": "music biography documentary"
+ },
+ "standout_the_ben_kjar_story": {
+  "genre_label": "inspirational sports documentary",
+  "kid_friendly": "yes (PG)"
+ },
+ "meta_take_one": {
+  "genre_label": "crime thriller"
+ },
+ "above_the_line": {
+  "genre_label": "heist action comedy"
+ },
+ "an_eye_for_an_eye_2025": {
+  "genre_label": "Iranian justice documentary"
+ },
+ "31_candles": {
+  "genre_label": "romantic comedy"
+ },
+ "so_fades_the_light": {
+  "genre_label": "cult psychological thriller"
+ },
+ "megadoc": {
+  "genre_label": "filmmaking documentary"
+ },
+ "the_furious": {
+  "genre_label": "martial-arts action thriller"
+ },
+ "the_furious_2025": {
+  "genre_label": "martial-arts action thriller"
+ },
+ "power_ballad": {
+  "genre_label": "music comedy-drama"
+ },
+ "eye_for_an_eye_2025": {
+  "genre_label": "supernatural horror"
+ },
+ "beast_2026": {
+  "genre_label": "MMA sports action drama"
+ },
+ "nouvelle_vague_2025": {
+  "genre_label": "French New Wave period comedy-drama"
+ },
+ "kpop_demon_hunters": {
+  "genre_label": "animated musical fantasy",
+  "kid_friendly": "older kids (PG)"
+ }
+}

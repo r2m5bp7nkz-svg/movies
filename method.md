@@ -1,0 +1,16 @@
+# Method: how each run is produced
+
+1. **Candidate discovery (sightings).** JustWatch's public GraphQL `popularTitles` is queried for country US, objectType MOVIE, releaseYear 2025–2026 and monetizationType FLATRATE, filtered to each service's own package(s): Netflix `nfx`; Prime Video `amp` (included with Prime, never Amazon Channels); Hulu `hlu`; Disney+ `dnp`; HBO Max `mxx`; Apple TV `atp`; Paramount+ `ppp`/`ppe`; Peacock `pct`/`pcp`; Starz `stz`; MGM+ `epx`. The query paginates the full catalog, not just the top. A second source is Rotten Tomatoes' "New Fresh Movies on <service>" browse lists (cnapi, sorted newest, paginated back to early 2025 where RT allows; RT has no Starz or MGM+ filter, and its Prime list mixes in rentals). Any ≥80% title from those lists that was not already a candidate is looked up by title on JustWatch (`jw_supplement.py`). On 2026-10-24 none turned out to be FLATRATE-included with a 2025–26 first-release year.
+2. **Identity.** Each candidate's IMDb id (from JustWatch) gives the IMDb title, year, type and top cast through IMDb's suggestion JSON. The RT page is found by RT search, matching on normalized title (JW or IMDb English title) and year (±1; an off-by-one year needs cast overlap). Manual matches are in `overrides/rt_manual.json`.
+3. **Scores.** Every matched RT movie page is fetched and its `media-scorecard-json` parsed: Tomatometer (`criticsScore.score`, `reviewCount`), Popcornmeter (`audienceScore.score`, `bandedRatingCount`), and where-to-watch JSON. A missing Popcornmeter stays NULL and shows as "—".
+4. **Eligibility.** Release year (rule above) is 2025 or 2026, the title is a film (not a short, special or series), and Tomatometer ≥ 80.
+5. **Availability.** A (movie, service) pair is *included* when JustWatch has a FLATRATE offer on the service's own package **and** the service's own public title page (the URL from that JustWatch offer) confirms it:
+   - Netflix/Hulu/HBO Max/Disney+/Paramount+/Starz/MGM+: the title page loads (HTTP 200) and shows the title, with no "coming soon" / future availabilityStartTime.
+   - Prime Video: the Amazon `entitlement-message` must reference Prime. watch.amazon.com bot walls fall back to primevideo.com/detail/<GTI>.
+   - Apple TV: the page shows the subscription offer (free trial / monthly price), not just buy/rent.
+   - Peacock: the /watch-online/ page says "You can watch … on Peacock".
+   Reelgood (access_type 2 = subscription) and RT where-to-watch are recorded as extra cross-checks. Any disagreement is flagged.
+   Rejections are kept in the DB: channel add-ons, rent/buy, free-with-ads, and bundle access.
+6. **Ranking.** Tomatometer desc, then critic review count desc, then Popcornmeter desc, top 10 per service. Fewer than 10 are shown as-is.
+7. **Flags.** † <20 critic reviews; ‡ Popcornmeter from a 50–99 rating band; ʸ IMDb/RT/JustWatch years disagree; ◆ plan tier (Paramount+ Premium-only, Peacock Premium Plus-only); ⏳ JustWatch end date within 45 days; ⚠ availability note (Reelgood disagreement or mismatch, dual Disney+/Hulu listing).
+8. **Labels.** genre_label and kid_friendly are hand-written from RT genres, descriptions and MPAA ratings (`overrides/movie_overrides.json`).
