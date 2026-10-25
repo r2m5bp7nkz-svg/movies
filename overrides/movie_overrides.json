@@ -304,5 +304,258 @@
  "kpop_demon_hunters": {
   "genre_label": "animated musical fantasy",
   "kid_friendly": "older kids (PG)"
+ },
+ "one_battle_after_another": {
+  "genre_label": "Action thriller / dark comedy"
+ },
+ "lurker": {
+  "genre_label": "Psychological thriller"
+ },
+ "companion_2025": {
+  "genre_label": "Sci-fi horror thriller"
+ },
+ "oasis_dont_look_back_in_anger": {
+  "genre_label": "Britpop music documentary"
+ },
+ "the_ugly_stepsister": {
+  "genre_label": "Norwegian body-horror fairy tale"
+ },
+ "sentimental_value": {
+  "genre_label": "Norwegian family drama"
+ },
+ "nirvanna_the_band_the_show_the_movie": {
+  "genre_label": "Canadian mockumentary comedy"
+ },
+ "the_presidents_cake": {
+  "genre_label": "Iraqi (Arabic) drama"
+ },
+ "left_handed_girl": {
+  "genre_label": "Taiwanese (Mandarin) family drama"
+ },
+ "the_perfect_neighbor_2025": {
+  "genre_label": "True-crime documentary"
+ },
+ "cover_up_2025": {
+  "genre_label": "Investigative-journalism documentary (Seymour Hersh)"
+ },
+ "marty_life_is_short": {
+  "genre_label": "Biographical documentary (Martin Short)",
+  "kid_friendly": "older kids (PG-13)"
+ },
+ "homebound_2025": {
+  "genre_label": "Indian (Hindi) drama"
+ },
+ "i_swear_2025": {
+  "genre_label": "British biographical comedy-drama"
+ },
+ "selena_y_los_dinos": {
+  "genre_label": "Music documentary",
+  "kid_friendly": "older kids (PG)"
+ },
+ "merrily_we_roll_along": {
+  "genre_label": "Filmed Broadway musical"
+ },
+ "the_wedding_banquet": {
+  "genre_label": "Romantic comedy (LGBTQ+)"
+ },
+ "jackass_best_and_last": {
+  "genre_label": "Stunt comedy"
+ },
+ "are_we_good": {
+  "genre_label": "Comedy documentary"
+ },
+ "the_sheep_detectives": {
+  "genre_label": "Family comedy / murder mystery",
+  "kid_friendly": "yes (PG)"
+ },
+ "mr_burton": {
+  "genre_label": "Biographical drama (Richard Burton)"
+ },
+ "the_stranger_2025": {
+  "genre_label": "French crime drama (Camus adaptation)"
+ },
+ "good_boy_2025": {
+  "genre_label": "Haunted-house horror (dog POV)"
+ },
+ "maternal_instinct_2026": {
+  "genre_label": "True-crime documentary"
+ },
+ "vishwanath_and_sons": {
+  "genre_label": "Indian (Tamil) romantic drama"
+ },
+ "lost_in_starlight": {
+  "genre_label": "Korean animated sci-fi romance"
+ },
+ "main_vaapas_aaunga": {
+  "genre_label": "Indian (Hindi) musical romantic drama"
+ },
+ "queen_of_chess": {
+  "genre_label": "Chess documentary (Judit Polgár)",
+  "kid_friendly": "older kids (PG)"
+ },
+ "cosmic_princess_kaguya": {
+  "genre_label": "Japanese anime fantasy",
+  "kid_friendly": "older kids (PG)"
+ },
+ "the_truth_and_tragedy_of_moriah_wilson": {
+  "genre_label": "True-crime documentary"
+ },
+ "the_world_will_tremble": {
+  "genre_label": "Holocaust historical thriller"
+ },
+ "the_vortex_2025": {
+  "genre_label": "Drama thriller"
+ },
+ "sarahs_oil": {
+  "genre_label": "Historical biographical drama",
+  "kid_friendly": "older kids (PG)"
+ },
+ "kantara_a_legend_chapter_1": {
+  "genre_label": "Indian (Kannada) mythological action epic"
+ },
+ "star_people": {
+  "genre_label": "Sci-fi mystery drama"
+ },
+ "frozen_the_hit_broadway_musical": {
+  "genre_label": "Filmed Broadway musical (Disney)",
+  "kid_friendly": "yes (PG)"
+ },
+ "pets_2025": {
+  "genre_label": "Animal documentary",
+  "kid_friendly": "yes (PG)"
+ },
+ "dear_ms_a_revolution_in_print": {
+  "genre_label": "Feminist-history documentary"
+ },
+ "thoughts_and_prayers": {
+  "genre_label": "Gun-violence documentary"
+ },
+ "the_tale_of_silyan": {
+  "genre_label": "Macedonian docu-drama (storks)"
+ },
+ "olmo": {
+  "genre_label": "Coming-of-age comedy drama"
+ },
+ "sly_lives_aka_the_burden_of_black_genius": {
+  "genre_label": "Music documentary (Sly Stone)"
+ },
+ "lost_in_the_jungle_2025": {
+  "genre_label": "Survival documentary",
+  "kid_friendly": "older kids (PG)"
+ },
+ "sally_2025": {
+  "genre_label": "Biographical documentary (Sally Ride)",
+  "kid_friendly": "older kids (PG-13)"
+ },
+ "last_take_rust_and_the_story_of_halyna": {
+  "genre_label": "True-crime documentary"
+ },
+ "my_dearest_senorita": {
+  "genre_label": "Spanish LGBTQ+ drama"
+ },
+ "noah_kahan_out_of_body": {
+  "genre_label": "Music documentary"
+ },
+ "andre_is_an_idiot": {
+  "genre_label": "Personal comedy documentary"
+ },
+ "paralyzed_by_hope_the_maria_bamford_story": {
+  "genre_label": "Comedian documentary"
+ },
+ "the_stringer_2025": {
+  "genre_label": "Photojournalism investigative documentary"
+ },
+ "call_my_agent_the_movie": {
+  "genre_label": "French showbiz comedy"
+ },
+ "last_bullet": {
+  "genre_label": "French action thriller"
+ },
+ "ohh_my_dog": {
+  "genre_label": "Indian (Hindi) family adventure"
+ },
+ "the_disciple_2026": {
+  "genre_label": "Wu-Tang Clan music documentary"
+ },
+ "dorothy_2026": {
+  "genre_label": "Indian (Tamil) crime action drama"
+ },
+ "lust_stories_3": {
+  "genre_label": "Indian (Hindi) romance anthology"
+ },
+ "free_leonard_peltier": {
+  "genre_label": "Native-rights documentary"
+ },
+ "folktales": {
+  "genre_label": "Norwegian coming-of-age documentary"
+ },
+ "norm_the_tale_of_norm_macdonald": {
+  "genre_label": "Comedian documentary"
+ },
+ "a_child_of_my_own": {
+  "genre_label": "Spanish-language personal documentary"
+ },
+ "bunny_2025": {
+  "genre_label": "Dark comedy thriller"
+ },
+ "raat_akeli_hai_the_bansal_murders": {
+  "genre_label": "Indian (Hindi) murder mystery"
+ },
+ "vadh_2": {
+  "genre_label": "Indian (Hindi) crime thriller"
+ },
+ "the_road_between_us_the_ultimate_rescue": {
+  "genre_label": "War-rescue documentary"
+ },
+ "young_mothers": {
+  "genre_label": "Belgian (French) social drama"
+ },
+ "the_things_you_kill": {
+  "genre_label": "Turkish psychological thriller"
+ },
+ "the_old_woman_with_the_knife": {
+  "genre_label": "Korean action thriller"
+ },
+ "broken_land_2025": {
+  "genre_label": "Western drama"
+ },
+ "mermaid_2025": {
+  "genre_label": "Horror comedy"
+ },
+ "boy_george_and_culture_club": {
+  "genre_label": "Music documentary"
+ },
+ "13_days_13_nights": {
+  "genre_label": "French evacuation thriller (Kabul 2021)"
+ },
+ "portal_to_hell_2025": {
+  "genre_label": "Horror comedy"
+ },
+ "the_forbidden_city_2025": {
+  "genre_label": "Italian martial-arts action"
+ },
+ "odyssey_2025": {
+  "genre_label": "Drama thriller"
+ },
+ "a_useful_ghost": {
+  "genre_label": "Thai absurdist ghost comedy"
+ },
+ "i_live_here_now": {
+  "genre_label": "Psychological horror"
+ },
+ "yadang_the_snitch": {
+  "genre_label": "Korean crime action thriller"
+ },
+ "self_help": {
+  "genre_label": "Cult horror thriller"
+ },
+ "rescue_at_dongji": {
+  "genre_label": "Chinese WWII sea-rescue action drama"
+ },
+ "anything_that_moves": {
+  "genre_label": "Horror comedy thriller"
+ },
+ "stalkers_2025": {
+  "genre_label": "Thriller"
  }
 }

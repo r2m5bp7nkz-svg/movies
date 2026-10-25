@@ -9,61 +9,84 @@ svcs=[(r['service_code'],r['name']) for r in c.execute("SELECT * FROM services")
 order=[s for s,_,_ in SERVICES]; svcs.sort(key=lambda x:order.index(x[0]))
 FLAG_SYM={'few_critic_reviews':'†','few_audience_ratings':'‡','availability_conflict':'⚠','year_conflict':'ʸ','tier_note':'◆','leaving_soon':'⏳','official_unverified':'?'}
 def flags(mid,svc): return c.execute("SELECT flag_type,detail FROM flags WHERE run_id=? AND movie_id=? AND service_code=?",(R,mid,svc)).fetchall()
+def cap(t): return (t[:1].upper()+t[1:]) if t else t
 def pct(v): return '—' if v is None else f'{v}%'
-def rows(view,svc): return c.execute(f"SELECT t.*, m.kid_friendly FROM {view} t JOIN movies m USING(movie_id) WHERE service_code=? ORDER BY rnk",(svc,)).fetchall()
+def rows(view,svc): return c.execute(f"SELECT t.*, m.kid_friendly, m.rt_genres FROM {view} t JOIN movies m USING(movie_id) WHERE service_code=? ORDER BY rnk",(svc,)).fetchall()
+FLAG_SYM['few_imdb_votes']='ⁱ'
+def imdb(mid):
+    r=c.execute("SELECT rating,votes,imdb_url FROM v_latest_imdb WHERE movie_id=?",(mid,)).fetchone()
+    if not r or r['rating'] is None: return '—', False
+    return f"{r['rating']:.1f} ({r['votes']:,})", r['votes']<1000
+RULE=("A movie makes a service's main table only if its Rotten Tomatoes Tomatometer is at least 80%, its Popcornmeter is at least 80% (and RT actually displays one), "
+      "and it has at least 20 critic reviews. Tables are ranked by Tomatometer, ties broken by Popcornmeter, then by critic review count. "
+      "Movies that clear 80% with critics but have fewer than 20 reviews, or that have no Popcornmeter yet, are listed separately under each table and are not ranked in it. "
+      "IMDb ratings (out of 10, vote count in parentheses) are for information only and are never used as a filter.")
+FL=("Flags: ‡ Popcornmeter from only 50–99 ratings · † fewer than 20 critic reviews (side lists only) · ʸ sources disagree on the year · ◆ plan-tier note · "
+    "⏳ leaving within 45 days · ⚠ availability note · ⁱ IMDb rating from fewer than 1,000 votes.")
 md=[f"# Movies (first released 2025–2026) included with US streaming subscriptions\n\n**Date checked: {datetime.date.fromisoformat(D):%A, %B %-d, %Y}** (America/Los_Angeles). Generated from `movies.db` run {R}.\n",
-    "Ranking: Rotten Tomatoes Tomatometer (highest first), ties broken by number of critic reviews, then Popcornmeter. Critics/Audience = Tomatometer/Popcornmeter as read from each movie's own RT page, with critic review counts in parentheses. "
-    "Flags: † fewer than 20 critic reviews · ‡ Popcornmeter based on only 50–99 ratings · ʸ sources disagree on the year · ◆ tier note · ⏳ leaving within 45 days · ⚠ availability note.\n"]
+    RULE+" Critics/Audience are Tomatometer/Popcornmeter as read from each movie's own RT page, with critic review counts in parentheses.\n", FL+"\n"]
 H=[]
 H.append(f"""<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Streaming movies 2025–2026 · checked {D}</title><style>
-body{{font-family:-apple-system,Segoe UI,Roboto,sans-serif;max-width:1100px;margin:24px auto;padding:0 16px;color:#1d1d1f;line-height:1.45}}
-h1{{font-size:1.6em}} h2{{margin-top:2em;border-bottom:2px solid #eee;padding-bottom:4px}} table{{border-collapse:collapse;width:100%;font-size:.93em}}
+body{{font-family:-apple-system,Segoe UI,Roboto,sans-serif;max-width:1150px;margin:24px auto;padding:0 16px;color:#1d1d1f;line-height:1.45}}
+h1{{font-size:1.6em}} h2{{margin-top:2em;border-bottom:2px solid #eee;padding-bottom:4px}} h3{{font-size:1em;margin:14px 0 4px;color:#444}} table{{border-collapse:collapse;width:100%;font-size:.93em}}
 th,td{{border:1px solid #e3e3e3;padding:5px 8px;text-align:left;vertical-align:top}} th{{background:#f6f6f6}} td.n{{text-align:right;white-space:nowrap}}
-.flag{{color:#b45309;font-size:.85em}} .kid{{background:#e8f7ee;border-radius:4px;padding:0 4px;font-size:.8em;color:#166534}}
+table.side{{font-size:.85em;color:#333}} .flag{{color:#b45309;font-size:.85em}} .kid{{background:#e8f7ee;border-radius:4px;padding:0 4px;font-size:.8em;color:#166534}}
 .note{{background:#fff8e6;border-left:4px solid #f0b429;padding:8px 12px;margin:10px 0}} details{{margin:8px 0}} small{{color:#666}}
 </style></head><body>
 <h1>Movies first released in 2025–2026 that are included with US streaming subscriptions</h1>
 <p><b>Date checked: {datetime.date.fromisoformat(D):%A, %B %-d, %Y}</b> (America/Los_Angeles) · for Emil Frojd (Mountain View, CA) · generated from <code>movies.db</code> (run {R}).</p>
-<div class="note"><b>How to read this:</b> up to 10 movies per service with a Rotten Tomatoes Tomatometer of at least 80%, ranked by Tomatometer (ties go to the movie with more critic reviews, then the higher Popcornmeter).
-Both scores were read from each movie's own RT page today, and the number in parentheses is the critic review count.
+<div class="note"><b>How to read this:</b> {html.escape(RULE)}
+Both RT scores were read from each movie's own RT page today; where the Popcornmeter is missing, RT's page really shows none (checked in the scorecard markup, the embedded JSON and the audience-reviews page).
 Availability required two things: JustWatch lists the movie as included with the subscription (FLATRATE on the service's own package) <i>and</i> the service's own public title page confirms it. Reelgood and RT's "where to watch" were used as further cross-checks.
-Rentals, purchases, Amazon Channels, free-with-ads, and Hulu-in-Disney+ bundle access are excluded.<br>
-Flags: † fewer than 20 critic reviews · ‡ Popcornmeter from only 50–99 ratings · ʸ year sources disagree · ◆ plan-tier note · ⏳ leaving within 45 days · ⚠ availability note · <span class="kid">kids</span> suitable for young kids.</div>""")
+Rentals, purchases, Amazon Channels, free-with-ads, and Hulu-in-Disney+ bundle access are excluded.<br>{html.escape(FL)} <span class="kid">kids</span> marks titles suitable for young kids.</div>""")
+def symfl(mid,svc):
+    fl=flags(mid,svc); return fl,''.join(FLAG_SYM[f[0]] for f in fl if f[0] in FLAG_SYM)
+def mdrow(r,svc,num):
+    fl,sym=symfl(r['movie_id'],svc); im,low=imdb(r['movie_id']); url='https://www.rottentomatoes.com/m/'+r['rt_slug']
+    return f"| {num} | [{r['title']}]({url}){(' '+sym) if sym else ''} | {r['release_year']} | {r['tomatometer']}% ({r['critic_reviews']}) | {pct(r['popcornmeter'])} | {im}{' ⁱ' if low else ''} | {cap(r['genre_label']) or ''} |"
+def hrow(r,svc,num,side=False):
+    fl,sym=symfl(r['movie_id'],svc); im,low=imdb(r['movie_id']); url='https://www.rottentomatoes.com/m/'+r['rt_slug']
+    kid=f' <span class="kid">kids: {html.escape(r["kid_friendly"])}</span>' if r['kid_friendly'] and not side else ''
+    return (f"<tr><td class=n>{num}</td><td><a href='{url}'>{html.escape(r['title'])}</a>{kid}</td><td>{r['release_year']}</td><td class=n>{r['tomatometer']}% <small>({r['critic_reviews']} reviews)</small></td>"
+            f"<td class=n>{pct(r['popcornmeter'])} <small>{html.escape(r['audience_band'] or '') if r['popcornmeter'] is not None else ''}</small></td><td class=n>{im}{' ⁱ' if low else ''}</td><td>{html.escape(cap(r['genre_label']) or (r['rt_genres'] or ''))}</td>"
+            f"<td class=flag>{'<br>'.join(FLAG_SYM.get(f[0],'')+' '+html.escape(f[1]) for f in fl)}</td></tr>")
+TH="<tr><th>#</th><th>Movie</th><th>Year</th><th>Critics</th><th>Audience</th><th>IMDb</th><th>Type of movie</th><th>Flags</th></tr>"
+MDH="| # | Movie | Year | Critics | Audience | IMDb | Type of movie |\n|---|---|---|---|---|---|---|"
 for svc,name in svcs:
-    n=c.execute("SELECT n_qualifying FROM v_service_counts WHERE service_code=?",(svc,)).fetchone(); n=n[0] if n else 0
+    cn=c.execute("SELECT * FROM v_service_counts WHERE service_code=?",(svc,)).fetchone()
+    n=cn['n_qualifying'] if cn else 0
     rs=rows('v_top10',svc)
-    hdr=f"{name} — {n} qualifying movie{'s' if n!=1 else ''} found" + ("" if n>=10 else f" (only {n}; fewer than 10 qualify)")
-    md.append(f"\n## {hdr}\n\n| # | Movie | Year | Critics | Audience | Type of movie |\n|---|---|---|---|---|---|")
-    H.append(f"<h2>{html.escape(hdr)}</h2><table><tr><th>#</th><th>Movie</th><th>Year</th><th>Critics</th><th>Audience</th><th>Type of movie</th><th>Flags</th></tr>")
+    hdr=f"{name}: {n} qualifying movie{'s' if n!=1 else ''}" + ("" if n>=10 else f" (fewer than 10 qualify)")
+    md.append(f"\n## {hdr}\n\n{MDH}")
+    H.append(f"<h2>{html.escape(hdr)}</h2><table>{TH}")
     notes=[]
     for r in rs:
-        fl=flags(r['movie_id'],svc); sym=''.join(FLAG_SYM[f[0]] for f in fl if f[0] in FLAG_SYM)
-        url='https://www.rottentomatoes.com/m/'+r['rt_slug']
-        md.append(f"| {r['rnk']} | [{r['title']}]({url}){(' '+sym) if sym else ''} | {r['release_year']} | {r['tomatometer']}% ({r['critic_reviews']}) | {pct(r['popcornmeter'])} | {r['genre_label']} |")
-        kid=f' <span class="kid">kids: {html.escape(r["kid_friendly"])}</span>' if r['kid_friendly'] else ''
-        H.append(f"<tr><td class=n>{r['rnk']}</td><td><a href='{url}'>{html.escape(r['title'])}</a>{kid}</td><td>{r['release_year']}</td><td class=n>{r['tomatometer']}% <small>({r['critic_reviews']} reviews)</small></td>"
-                 f"<td class=n>{pct(r['popcornmeter'])} <small>{html.escape(r['audience_band'] or '') if r['popcornmeter'] is not None else ''}</small></td><td>{html.escape(r['genre_label'] or '')}</td>"
-                 f"<td class=flag>{'<br>'.join(FLAG_SYM.get(f[0],'')+' '+html.escape(f[1]) for f in fl)}</td></tr>")
-        for f in fl:
+        md.append(mdrow(r,svc,r['rnk'])); H.append(hrow(r,svc,r['rnk']))
+        for f in flags(r['movie_id'],svc):
             if f[0] in ('availability_conflict','tier_note','leaving_soon','year_conflict'): notes.append(f"{FLAG_SYM[f[0]]} {r['title']}: {f[1]}")
+    if not rs: H.append("<tr><td colspan=8><i>No movie meets all the rules.</i></td></tr>")
     H.append("</table>")
-    few=[r['title'] for r in rs if any(f[0]=='few_critic_reviews' for f in flags(r['movie_id'],svc))]
-    if few: md.append(f"\n*{len(few)} of these rank on fewer than 20 critic reviews (†).*")
     for x in notes: md.append(f"- {x}")
-    alt=rows('v_top10_min20',svc)
-    if few and alt:
-        H.append(f"<details><summary>Alternative view: top {len(alt)} with ≥20 critic reviews (not the requested ranking; same rules otherwise)</summary><table><tr><th>#</th><th>Movie</th><th>Year</th><th>Critics</th><th>Audience</th><th>Type of movie</th></tr>")
-        for r in alt: H.append(f"<tr><td class=n>{r['rnk']}</td><td><a href='https://www.rottentomatoes.com/m/{r['rt_slug']}'>{html.escape(r['title'])}</a></td><td>{r['release_year']}</td><td class=n>{r['tomatometer']}% <small>({r['critic_reviews']})</small></td><td class=n>{pct(r['popcornmeter'])}</td><td>{html.escape(r['genre_label'] or '(not labelled)')}</td></tr>")
-        H.append("</table></details>")
+    for view,label in (('v_thin','Also qualifies, thin data (critics and audience both 80%+, but fewer than 20 critic reviews)'),
+                       ('v_no_audience','Critics 80%+, no audience score yet (RT displays no Popcornmeter)')):
+        side=rows(view,svc)
+        if not side: continue
+        md.append(f"\n**{label}: {len(side)}**\n\n{MDH}"); [md.append(mdrow(r,svc,r['rnk'])) for r in side]
+        H.append(f"<h3>{html.escape(label)}: {len(side)}</h3><table class=side>{TH}"+''.join(hrow(r,svc,r['rnk'],True) for r in side)+"</table>")
+    below=rows('v_audience_below80',svc)
+    if below:
+        md.append(f"\n*Not qualifying: {len(below)} more with critics 80%+ but audience below 80% (e.g. {', '.join(r['title']+' '+str(r['tomatometer'])+'/'+str(r['popcornmeter']) for r in below[:4])}).*")
+        H.append(f"<details><summary>Critics 80%+ but Popcornmeter below 80%, so not qualifying: {len(below)}</summary><table class=side>{TH}"+''.join(hrow(r,svc,r['rnk'],True) for r in below)+"</table></details>")
 # recommendations
 recs=json.load(open(f'{BASE}/overrides/recommendations.json'))
 md.append("\n## Five recommendations\n"); H.append("<h2>Five recommendations</h2><ol>")
 for i,rc in enumerate(recs,1):
-    m=c.execute("SELECT m.title,m.release_year,s.tomatometer,s.popcornmeter,m.kid_friendly FROM movies m JOIN v_latest_scores s USING(movie_id) WHERE rt_slug=?",(rc['slug'],)).fetchone()
-    where=', '.join(dict(svcs)[r[0]] for r in c.execute("SELECT service_code FROM v_qualifying WHERE rt_slug=?",(rc['slug'],)))
-    md.append(f"{i}. **[{m['title']}](https://www.rottentomatoes.com/m/{rc['slug']})** ({m['release_year']}; {m['tomatometer']}% / {pct(m['popcornmeter'])}; on {where}): {rc['why']}")
-    H.append(f"<li><b><a href='https://www.rottentomatoes.com/m/{rc['slug']}'>{html.escape(m['title'])}</a></b> ({m['release_year']}; {m['tomatometer']}% / {pct(m['popcornmeter'])}; on {html.escape(where)}): {html.escape(rc['why'])}</li>")
+    m=c.execute("SELECT m.movie_id,m.title,m.release_year,s.tomatometer,s.popcornmeter,s.critic_reviews,m.kid_friendly FROM movies m JOIN v_latest_scores s USING(movie_id) WHERE rt_slug=?",(rc['slug'],)).fetchone()
+    assert m['tomatometer']>=80 and (m['popcornmeter'] or 0)>=80 and m['critic_reviews']>=20, rc['slug']
+    where=', '.join(dict(svcs)[r[0]] for r in c.execute("SELECT service_code FROM v_main WHERE rt_slug=?",(rc['slug'],)))
+    md.append(f"{i}. **[{m['title']}](https://www.rottentomatoes.com/m/{rc['slug']})** ({m['release_year']}; {m['tomatometer']}% / {pct(m['popcornmeter'])}; IMDb {imdb(m['movie_id'])[0]}; on {where}): {rc['why']}")
+    H.append(f"<li><b><a href='https://www.rottentomatoes.com/m/{rc['slug']}'>{html.escape(m['title'])}</a></b> ({m['release_year']}; {m['tomatometer']}% / {pct(m['popcornmeter'])}; IMDb {imdb(m['movie_id'])[0]}; on {html.escape(where)}): {html.escape(rc['why'])}</li>")
 H.append("</ol>")
 # method + exclusions
 nsrc=c.execute("SELECT COUNT(*) FROM sources_checked WHERE run_id=?",(R,)).fetchone()[0]
@@ -74,7 +97,7 @@ neg=c.execute("""SELECT a.service_code,a.offer_type,COUNT(*) FROM availability_o
  AND a.offer_type NOT IN ('included') AND m.exclude_reason IS NULL AND s.tomatometer>=80 GROUP BY 1,2""",(R,)).fetchall()
 H.append(f"""<h2>Method and coverage</h2><ul>
 <li><b>Discovery:</b> the full JustWatch US catalog of 2025–2026 movies for each service's own subscription package ({ncand} distinct titles), plus Rotten Tomatoes' "new fresh movies on &lt;service&gt;" lists, each looked up again on JustWatch. RT has no Starz or MGM+ list.</li>
-<li><b>Scores:</b> {nrt} RT movie pages were fetched and parsed today, using the scorecard JSON (Tomatometer, critic review count, Popcornmeter, rating band). If RT shows no Popcornmeter, the table shows "—".</li>
+<li><b>Scores:</b> {nrt} RT movie pages were fetched and parsed today, using the scorecard JSON (Tomatometer, critic review count, Popcornmeter, rating band). If RT shows no Popcornmeter, the table shows "—". Every such movie was re-checked by <code>audience_audit.py</code> (scorecard markup, embedded JSON, trailing-slash variant, audience-reviews page, RT API probes) and the evidence is stored.</li><li><b>IMDb:</b> user rating and vote count from IMDb's official daily ratings dataset (title.ratings.tsv.gz), which carries the same numbers as each title page. The pages themselves show scripted clients a human-verification wall. Informational only.</li>
 <li><b>Year rule:</b> the earliest of the IMDb year and the RT year, i.e. the first release, festivals included. Streaming dates are never used. Disagreements are flagged ʸ.</li>
 <li><b>Not films:</b> IMDb types short, TV short, TV special (stand-up, concerts, live broadcasts), episodes and series are excluded, as is anything 40 minutes or shorter.</li>
 <li><b>Availability:</b> JustWatch FLATRATE on the service's own package, confirmed on the service's own title page. Prime pages were read through Amazon's entitlement message, and "Subscribe to &lt;channel&gt;", "rent or buy" and "Watch for free" (ads) were all rejected. Peacock was checked through its public watch-online page. Reelgood and RT where-to-watch are cross-checks. {nsrc} source URLs were logged.</li>

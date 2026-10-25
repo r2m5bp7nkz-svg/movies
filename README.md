@@ -25,24 +25,25 @@ Every stage is keyed by run date. Re-running the same date replaces that run's o
 - `score_obs`: Tomatometer, critic review count, average, certified, Popcornmeter, audience band and counts per run.
 - `evidence`: claim/value/doc_type/is_official/url/quote/retrieved_at for tomatometer, popcornmeter and release_year.
 - `sources_checked`, `flags`, `change_events`.
-- Views: `v_latest_scores`, `v_availability`, `v_included`, `v_qualifying`, `v_ranked`, `v_top10`, `v_top10_min20` (alternative cut with ≥20 reviews), `v_service_counts`.
+- `imdb_rating_obs`: IMDb rating/votes per run and movie (source = IMDb dataset, with the IMDb URL, dataset Last-Modified and JustWatch's IMDb score as a cross-check).
+- Views: `v_latest_scores`, `v_latest_imdb`, `v_availability`, `v_included`, `v_qualifying` (all Tomatometer ≥80), `v_main` (plus Popcornmeter ≥80 and ≥20 reviews), `v_ranked`, `v_top10`, `v_thin`, `v_no_audience`, `v_audience_below80`, `v_service_counts`.
 
 ```sql
 SELECT service_code, rnk, title, release_year, tomatometer, critic_reviews, popcornmeter, genre_label FROM v_top10 ORDER BY service_code, rnk;
 SELECT * FROM v_service_counts;
 ```
-Qualifying counts for run 2026-10-24:
+Counts for run 2026-10-24 (rules r2): service | main-table qualifiers | thin data | no audience score | critics 80+ but audience <80 | all critics 80+
 ```
-appletv | 9
-disney | 13
-hbomax | 30
-hulu | 52
-mgmplus | 9
-netflix | 84
-paramount | 17
-peacock | 11
-prime | 54
-starz | 4
+appletv | 6 | 0 | 1 | 2 | 9
+disney | 7 | 1 | 3 | 2 | 13
+hbomax | 18 | 0 | 5 | 7 | 30
+hulu | 27 | 0 | 11 | 14 | 52
+mgmplus | 6 | 0 | 0 | 3 | 9
+netflix | 33 | 10 | 23 | 18 | 84
+paramount | 10 | 1 | 2 | 4 | 17
+peacock | 6 | 1 | 1 | 3 | 11
+prime | 16 | 6 | 23 | 9 | 54
+starz | 2 | 0 | 0 | 2 | 4
 ```
 
 ## Rule notes (2026-10-24, v1)
@@ -50,4 +51,11 @@ starz | 4
 - These are not films: IMDb types short/tvShort/tvSpecial/tvEpisode/tvSeries, runtimes ≤40 min, and stand-up specials. Excluded by review: *Gary* (Hulu files it as a series) and *Color Theories by Julio Torres* (stand-up special).
 - Prime Video counts only titles whose Amazon entitlement message says Prime ("Join Prime", "Subscribe to Prime…"). "Free trial of <channel>", "Subscribe to <channel>", "rent or buy" and "Watch for free" (ads) are all excluded.
 - Disney+ counts only titles on JustWatch's Disney+ package with a Disney+ title page. Titles RT labels "Disney+" that are only on Hulu are treated as Hulu-in-Disney+ bundle access. *Oasis: Don't Look Back in Anger* was moved to bundle by review (see overrides/pair_overrides.json).
-- Ranking strictly follows the request (Tomatometer), so low-review-count 100% titles rank high and are flagged †. `v_top10_min20` gives a ≥20-review alternative.
+- (Superseded by r2 below) v1 ranked strictly by Tomatometer, so 100% titles with few reviews ranked high (†).
+
+## Rule change 2026-10-24 (r2)
+- Main per-service top 10: Tomatometer ≥80 **and** a displayed Popcornmeter ≥80 **and** ≥20 critic reviews. Ranked by Tomatometer, then Popcornmeter, then critic review count.
+- Side lists per service, outside the top 10: *thin data* (both ≥80, <20 reviews) and *critics 80%+, no audience score yet*. Critics ≥80 with audience <80 are shown collapsed as not qualifying.
+- Audience audit (`scripts/audience_audit.py`): all 68 qualifying movies with a NULL Popcornmeter were re-checked in every place RT can show one. RT truly displays no Popcornmeter for all 68 ("Fewer than 50 Ratings" / "0 Ratings"), so the v1 parser was not failing. Per-movie evidence quotes are in `evidence` (claim = popcornmeter).
+- New IMDb column, from IMDb's official ratings dataset (`scripts/imdb_ratings.py`). Informational only; ⁱ = fewer than 1,000 votes.
+- Discovery audit: every Prime reference title (Is God Is, The Sheep Detectives, Project Hail Mary, One Battle After Another, Hedda, Deep Cover, John Candy: I Like Me, Crime 101, Roofman) and the Netflix titles KPop Demon Hunters, Frankenstein and Wake Up Dead Man were already in the DB and verified as included. They were hidden by the v1 ranking, not lost by discovery. JustWatch catalog pulls were complete (totalCount = rows fetched for every package). The RT-list titles not found on JustWatch were pre-2025 or rent-only; for example, six 2026 Prime items (Esta Isla, Over/Under, Mustache, Decorado, Kontinental '25, Miroirs No. 3) are "Rent … on Fandango" on RT.

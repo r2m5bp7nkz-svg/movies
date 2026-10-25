@@ -125,17 +125,43 @@ CREATE VIEW v_qualifying AS
  FROM v_included i JOIN movies m USING(movie_id) JOIN v_latest_scores s USING(movie_id)
  WHERE m.exclude_reason IS NULL AND m.release_year IN (2025,2026) AND s.tomatometer>=80;
 
--- Ranked per service: Tomatometer desc, then critic review count desc, then Popcornmeter desc.
+-- Rule change 2026-10-24 (r2): main per-service tables need Tomatometer>=80 AND a displayed Popcornmeter>=80
+-- AND >=20 critic reviews; ranked by Tomatometer, then Popcornmeter, then critic review count.
 DROP VIEW IF EXISTS v_ranked;
-CREATE VIEW v_ranked AS
- SELECT q.*, ROW_NUMBER() OVER (PARTITION BY service_code ORDER BY tomatometer DESC, critic_reviews DESC, COALESCE(popcornmeter,-1) DESC, title) AS rnk
- FROM v_qualifying q;
 DROP VIEW IF EXISTS v_top10;
-CREATE VIEW v_top10 AS SELECT * FROM v_ranked WHERE rnk<=10;
--- Alternative cut (not the requested table): only scores with >=20 critic reviews
 DROP VIEW IF EXISTS v_top10_min20;
-CREATE VIEW v_top10_min20 AS SELECT * FROM (
- SELECT q.*, ROW_NUMBER() OVER (PARTITION BY service_code ORDER BY tomatometer DESC, critic_reviews DESC, COALESCE(popcornmeter,-1) DESC, title) AS rnk
- FROM v_qualifying q WHERE critic_reviews>=20) WHERE rnk<=10;
+DROP VIEW IF EXISTS v_main;
+CREATE VIEW v_main AS SELECT * FROM v_qualifying WHERE popcornmeter>=80 AND critic_reviews>=20;
+CREATE VIEW v_ranked AS
+ SELECT q.*, ROW_NUMBER() OVER (PARTITION BY service_code ORDER BY tomatometer DESC, popcornmeter DESC, critic_reviews DESC, title) AS rnk
+ FROM v_main q;
+CREATE VIEW v_top10 AS SELECT * FROM v_ranked WHERE rnk<=10;
+-- Side lists (not ranked into the top 10)
+DROP VIEW IF EXISTS v_thin;
+CREATE VIEW v_thin AS SELECT q.*, ROW_NUMBER() OVER (PARTITION BY service_code ORDER BY tomatometer DESC, popcornmeter DESC, critic_reviews DESC, title) AS rnk
+ FROM v_qualifying q WHERE popcornmeter>=80 AND critic_reviews<20;           -- both >=80 but <20 critic reviews
+DROP VIEW IF EXISTS v_no_audience;
+CREATE VIEW v_no_audience AS SELECT q.*, ROW_NUMBER() OVER (PARTITION BY service_code ORDER BY tomatometer DESC, critic_reviews DESC, title) AS rnk
+ FROM v_qualifying q WHERE popcornmeter IS NULL;                              -- critics 80%+, RT shows no Popcornmeter yet
+DROP VIEW IF EXISTS v_audience_below80;
+CREATE VIEW v_audience_below80 AS SELECT q.*, ROW_NUMBER() OVER (PARTITION BY service_code ORDER BY tomatometer DESC, popcornmeter DESC, critic_reviews DESC, title) AS rnk
+ FROM v_qualifying q WHERE popcornmeter<80;                                   -- critics 80%+, audience below 80%: does not qualify
 DROP VIEW IF EXISTS v_service_counts;
-CREATE VIEW v_service_counts AS SELECT service_code, COUNT(*) AS n_qualifying FROM v_qualifying GROUP BY service_code;
+CREATE VIEW v_service_counts AS SELECT service_code,
+  SUM(popcornmeter>=80 AND critic_reviews>=20) AS n_qualifying,
+  SUM(popcornmeter>=80 AND critic_reviews<20) AS n_thin,
+  SUM(popcornmeter IS NULL) AS n_no_audience,
+  SUM(popcornmeter<80) AS n_audience_below80,
+  COUNT(*) AS n_critics80
+ FROM v_qualifying GROUP BY service_code;
+
+-- IMDb user rating observations (informational only; never a filter). Source: IMDb's official daily dataset title.ratings.tsv.gz
+-- (title pages are behind an AWS WAF human-verification challenge for scripted clients); JustWatch's copy of the IMDb score is kept as a cross-check.
+CREATE TABLE IF NOT EXISTS imdb_rating_obs(
+ obs_id INTEGER PRIMARY KEY, run_id INTEGER NOT NULL REFERENCES runs(run_id) ON DELETE CASCADE,
+ movie_id INTEGER NOT NULL REFERENCES movies(movie_id), imdb_id TEXT NOT NULL,
+ rating REAL, votes INTEGER, imdb_url TEXT NOT NULL, source TEXT NOT NULL, source_url TEXT, source_last_modified TEXT,
+ jw_imdb_score REAL, jw_imdb_votes INTEGER, title_page_http INTEGER, observed_at TEXT NOT NULL,
+ UNIQUE(run_id, movie_id));
+DROP VIEW IF EXISTS v_latest_imdb;
+CREATE VIEW v_latest_imdb AS SELECT * FROM imdb_rating_obs WHERE run_id=(SELECT run_id FROM v_latest_run);
