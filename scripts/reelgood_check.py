@@ -28,6 +28,7 @@ def work(m):
     subs=set(a['source_name'] for a in d.get('availability',[]) if a.get('access_type')==2)
     return mid,best['slug'],subs
 c.execute("DELETE FROM availability_obs WHERE run_id=? AND source='reelgood'",(run,))
+c.commit()  # release write lock so worker threads can log fetch_cache
 now=datetime.datetime.now().isoformat(timespec='seconds')
 with cf.ThreadPoolExecutor(4) as ex:
     for i,(mid,slug,subs) in enumerate(ex.map(work,movies)):
@@ -39,6 +40,6 @@ with cf.ThreadPoolExecutor(4) as ex:
             c.execute("INSERT OR REPLACE INTO availability_obs(run_id,movie_id,service_code,source,offer_type,package,url,http_status,detail,observed_at) VALUES(?,?,?,?,?,?,?,?,?,?)",
               (run,mid,svc,'reelgood',ot,None,f'https://reelgood.com/movie/{slug}' if slug else None,200,det,now))
         if slug: c.execute("UPDATE movies SET reelgood_slug=? WHERE movie_id=?",(slug,mid))
-        if i%25==0: c.commit()
+        c.commit()  # per-row: avoid fetch_cache deadlock with open write txn
 c.commit()
 for r in c.execute("SELECT service_code,offer_type,count(*) FROM availability_obs WHERE run_id=? AND source='reelgood' GROUP BY 1,2",(run,)): print(tuple(r))

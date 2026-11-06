@@ -31,11 +31,15 @@ def judge(svc, s, titles):
     if svc=='prime':
         m=re.search(r'data-testid="entitlement-message"[^>]*>([^<]+)<',s)
         msg=html.unescape(m.group(1)) if m else ''
-        if re.search(r'(Subscribe to Prime|Included with (Amazon )?Prime|Watch with Prime|Prime membership|free Prime trial|Join Prime)',msg): return 'included', 'entitlement-message: '+msg
+        # Explicit Prime entitlement (incl. "Subscribe to <channel> or Prime" / "Subscribe to Prime or <channel>").
+        if re.search(r'(Subscribe to Prime|Included with (Amazon )?Prime|Watch with Prime|Prime membership|free Prime trial|Join Prime|\bor Prime\b|Prime,|Prime or)',msg): return 'included', 'entitlement-message: '+msg
+        # Ambiguous "Subscribe to X or N others" — leave unclear so Reelgood/RT can confirm (must be before channel_addon).
+        if re.search(r'Subscribe to .+ or \d+ others',msg): return 'unknown', 'entitlement-message: '+msg+' (ambiguous others; not a hard channel-only reject)'
+        # Channel-only subscribe/trial with no Prime option named.
         if re.search(r'^(Subscribe to|Start your free trial of|Watch with) ',msg) and 'Prime' not in msg: return 'channel_addon', 'entitlement-message: '+msg
-        if re.search(r'(Free trial of|Subscribe to) ',msg): return 'channel_addon', 'entitlement-message: '+msg
+        if re.search(r'(Free trial of|Subscribe to) ',msg) and 'Prime' not in msg: return 'channel_addon', 'entitlement-message: '+msg
         if re.search(r'^Watch for free',msg): return 'free_ads', 'entitlement-message: '+msg+' (free with ads, not a Prime-membership entitlement)'
-        if re.search(r'(Rent|Buy|rent|buy)',msg): return 'rent', 'entitlement-message: '+msg
+        if re.search(r'(Rent|Buy|rent|buy)',msg) and 'Prime' not in msg: return 'rent', 'entitlement-message: '+msg
         return 'unknown', 'entitlement-message: '+(msg or 'none found')
     if svc=='appletv':
         if re.search(r'(Accept Free Trial|days free, then \$[\d.]+/month|Watch with Apple TV|Apple TV\+? subscription)',s): return 'included','Apple TV subscription offer on page (free trial / monthly price)'
@@ -71,11 +75,13 @@ def work(p):
     if code!=200: return p,u,code,'unreachable' if code<0 or code>=500 or code==403 else 'not_listed', f'HTTP {code}'
     ot_,det=judge(svc,s,[t,ot]); return p,u,code,ot_,det
 c.execute("DELETE FROM availability_obs WHERE run_id=? AND source='official'",(run,))
+c.commit()  # release write lock so worker threads can log fetch_cache
 now=datetime.datetime.now().isoformat(timespec='seconds')
 with cf.ThreadPoolExecutor(3) as ex:
     for p,u,code,ot_,det in ex.map(work,pairs):
         c.execute("INSERT OR REPLACE INTO availability_obs(run_id,movie_id,service_code,source,offer_type,package,url,http_status,detail,observed_at) VALUES(?,?,?,?,?,?,?,?,?,?)",
           (run,p[0],p[3],'official',ot_,None,u,code,det,now))
         if u: c.execute("INSERT OR IGNORE INTO sources_checked(run_id,source,url,checked_at,result) VALUES(?,?,?,?,?)",(run,'official:'+p[3],u,now,f'{code} {ot_}'))
+        c.commit()  # per-row commit: workers writing fetch_cache must not block on an open write txn
 c.commit()
 for r in c.execute("SELECT service_code,offer_type,count(*) FROM availability_obs WHERE run_id=? AND source='official' GROUP BY 1,2",(run,)): print(tuple(r))

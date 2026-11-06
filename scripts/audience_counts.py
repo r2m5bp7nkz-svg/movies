@@ -12,7 +12,7 @@ Cache reuse: a movie with an 'ok' observation checked within CACHE_DAYS (7) is n
 current run with reused_from_obs_id set (same band, url and original observed_at). Pages themselves go through rt_lib.get(), which
 reuses any <7-day-old capture logged in fetch_cache. `--refresh` (or MOVIES_REFRESH=1) forces live fetches for both."""
 import sys, os, re, json, html, datetime, sqlite3, hashlib, concurrent.futures as cf
-sys.path.insert(0, os.path.dirname(__file__)); from rt_lib import get, scr, BASE, REFRESH, CACHE_DAYS, STATS, parse_movie
+sys.path.insert(0, os.path.dirname(__file__)); from rt_lib import pct_score, get, scr, BASE, REFRESH, CACHE_DAYS, STATS, parse_movie
 D=sys.argv[1] if len(sys.argv)>1 else datetime.date.today().isoformat()
 def band_min(b):
     if not b: return None
@@ -26,7 +26,7 @@ def read(slug):
     r={'url':url,'http':code,'retrieved_at':datetime.datetime.now().isoformat(timespec='seconds')}
     if code!=200: r['status']='unreadable'; r['reason']=f'HTTP {code}'; return r
     sc=scr(s,'media-scorecard-json') or {}; au=sc.get('audienceScore') or {}
-    r['json_band']=au.get('bandedRatingCount'); r['json_score']=au.get('score'); r['hide']=sc.get('hideAudienceScore')
+    r['json_band']=au.get('bandedRatingCount'); r['json_score']=pct_score(au); r['hide']=sc.get('hideAudienceScore')
     pm=parse_movie(s); r['tomatometer_seen']=pm['tomatometer']; r['critic_reviews_seen']=pm['critic_reviews']
     r['verified_shown']=bool(r['json_band'] and 'Verified' in r['json_band'])
     m=re.search(r'<media-scorecard\b.*?</media-scorecard>',s,re.S); blk=m.group(0) if m else ''

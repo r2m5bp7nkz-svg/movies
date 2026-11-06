@@ -87,6 +87,20 @@ def info(s,label):
         if i<0: return None
     seg=s[i:i+900]; seg=re.sub(r'<[^>]+>',' ',seg); seg=html.unescape(re.sub(r'\s+',' ',seg)).strip()
     return seg[len(label):].strip()
+def pct_score(obj):
+    """Read a Tomatometer/Popcornmeter integer from a scorecard block.
+    RT historically exposed `score` ("95"); as of ~2026-11 some pages only expose `scorePercent` ("95%").
+    Never estimates: returns None when neither is a parseable 0–100 value."""
+    if not obj: return None
+    v=obj.get('score')
+    if v not in (None,''):
+        try: return int(str(v).strip().rstrip('%'))
+        except Exception: pass
+    v=obj.get('scorePercent')
+    if v not in (None,''):
+        m=re.match(r'^\s*(\d{1,3})\s*%?\s*$', str(v))
+        if m: return int(m.group(1))
+    return None
 def parse_movie(s):
     sc=scr(s,'media-scorecard-json') or {}; hero=scr(s,'media-hero-json') or {}; wtw=scr(s,'where-to-watch-json') or {}
     ld=None
@@ -105,9 +119,9 @@ def parse_movie(s):
     rd={k:cut(info(s,k),[x for x in stops if x!=k]) for k in ['Release Date (Theaters)','Release Date (Streaming)','Runtime','Original Language','Genre','Rating']}
     return {
       'title': (hero.get('content') or {}).get('title') or (ld or {}).get('name'),
-      'tomatometer': int(cs['score']) if cs.get('score') not in (None,'') else None,
+      'tomatometer': pct_score(cs),
       'critic_reviews': cs.get('reviewCount'), 'critic_avg': cs.get('averageRating'), 'certified_fresh': cs.get('certified'),
-      'popcorn': int(au['score']) if au.get('score') not in (None,'') else None,
+      'popcorn': pct_score(au),
       'audience_band': au.get('bandedRatingCount'), 'audience_reviews': au.get('reviewCount'),
       'audience_liked': au.get('likedCount'), 'audience_notliked': au.get('notLikedCount'),
       'hide_audience': sc.get('hideAudienceScore'),

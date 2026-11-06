@@ -4,7 +4,7 @@ Re-fetches the RT page fresh (desktop Windows UA; with and without trailing slas
 and checks every place a Popcornmeter can appear. Writes raw/audience_audit_<D>.json, evidence + sources_checked rows,
 and updates score_obs.popcornmeter ONLY when a page actually displays a number."""
 import sys, os, json, re, datetime, sqlite3, urllib.request, urllib.error, gzip, html
-sys.path.insert(0, os.path.dirname(__file__)); from rt_lib import scr, BASE
+sys.path.insert(0, os.path.dirname(__file__)); from rt_lib import scr, BASE, pct_score
 D=sys.argv[1] if len(sys.argv)>1 else datetime.date.today().isoformat()
 UA='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36'
 def fetch(url, accept='text/html'):
@@ -19,9 +19,9 @@ def places(s):
     out={}
     sc=scr(s,'media-scorecard-json') or {}
     au=sc.get('audienceScore') or {}; ov=sc.get('overlay') or {}
-    out['scorecard_json.audienceScore.score']=au.get('score')
-    out['scorecard_json.overlay.audienceAll.score']=(ov.get('audienceAll') or {}).get('score')
-    out['scorecard_json.overlay.audienceVerified.score']=(ov.get('audienceVerified') or {}).get('score')
+    out['scorecard_json.audienceScore.score']=pct_score(au)
+    out['scorecard_json.overlay.audienceAll.score']=pct_score(ov.get('audienceAll') or {})
+    out['scorecard_json.overlay.audienceVerified.score']=pct_score(ov.get('audienceVerified') or {})
     out['scorecard_json.hideAudienceScore']=sc.get('hideAudienceScore')
     out['band']=au.get('bandedRatingCount')
     m=re.search(r'<media-scorecard\b.*?</media-scorecard>',s,re.S)
