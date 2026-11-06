@@ -102,3 +102,10 @@ peacock | 6 | 3
 prime | 16 | 12
 starz | 2 | 2
 ```
+
+## Refresh 2026-11-05
+- Forced live re-check (`./run_all.sh 2026-11-05 --refresh`). Catalog grew to 3331 movies stored; 77 distinct still qualify under r3.
+- **RT scorecard change:** many movie pages no longer expose `criticsScore.score` / `audienceScore.score`, only `scorePercent` ("95%"). `rt_lib.pct_score()` + `parse_movie` / `audience_counts` / `audience_audit` updated. Never estimates.
+- **Prime entitlement copy:** Amazon now often shows "Subscribe to <channel> or Prime". That counts as included. Ambiguous "Subscribe to X or N others" is `unknown` (not a hard channel_addon reject) so Reelgood/RT can confirm.
+- **official_check / reelgood_check:** commit after DELETE and per-row so worker threads writing `fetch_cache` do not deadlock on an open SQLite write txn.
+- Qualifying counts unchanged except Prime 12→11 (*Good Boy* dropped: official title page resolved to "Heel", Reelgood has no amazon_prime).

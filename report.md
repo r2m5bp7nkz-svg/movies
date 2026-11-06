@@ -69,7 +69,7 @@ Flags: ‡ Popcornmeter from only 50–99 ratings · † fewer than 20 critic re
 
 *Not qualifying: 18 more with critics 80%+ but audience below 80% (e.g. Kidnapped: Elizabeth Smart 100/78, A Toxic Love Story 100/64, I Am Frankelda 95/75, East of Wall 95/72).*
 
-## Amazon Prime Video: 11 qualifying movies
+## Amazon Prime Video: 8 qualifying movies (fewer than 10 qualify)
 
 | # | Movie | Year | Critics | Audience | IMDb | Type of movie |
 |---|---|---|---|---|---|---|
@@ -80,9 +80,7 @@ Flags: ‡ Popcornmeter from only 50–99 ratings · † fewer than 20 critic re
 | 5 | [One Battle After Another](https://www.rottentomatoes.com/m/one_battle_after_another) ⏳ | 2025 | 94% (448) | 85% | 7.6 (455,861) | Action thriller / dark comedy |
 | 6 | [John Candy: I Like Me](https://www.rottentomatoes.com/m/john_candy_i_like_me) | 2025 | 89% (76) | 96% | 8.0 (13,070) | Comedian biography documentary |
 | 7 | [Crime 101](https://www.rottentomatoes.com/m/crime_101_2026) | 2026 | 88% (200) | 83% | 6.8 (100,057) | Heist crime thriller |
-| 8 | [Roofman](https://www.rottentomatoes.com/m/roofman) | 2025 | 87% (218) | 85% | 6.9 (91,067) | True-crime comedy-drama |
-| 9 | [Superman](https://www.rottentomatoes.com/m/superman_2025) ⏳ | 2025 | 83% (509) | 90% | 7.0 (453,688) | Superhero action adventure |
-| 10 | [Novocaine](https://www.rottentomatoes.com/m/novocaine_2025) | 2025 | 81% (221) | 84% | 6.5 (97,774) | Action comedy |
+| 8 | [Superman](https://www.rottentomatoes.com/m/superman_2025) ⏳ | 2025 | 83% (509) | 90% | 7.0 (453,688) | Superhero action adventure |
 - ⏳ One Battle After Another: JustWatch: leaves Nov 18, 2026 (PT)
 - ⏳ Superman: JustWatch: leaves Dec 18, 2026 (PT)
 
@@ -97,7 +95,7 @@ Flags: ‡ Popcornmeter from only 50–99 ratings · † fewer than 20 critic re
 | 5 | [Kantara: A Legend - Chapter 1](https://www.rottentomatoes.com/m/kantara_a_legend_chapter_1) † | 2025 | 85% (13) | 92% | 8.1 (60,095) | Indian (Kannada) mythological action epic |
 | 6 | [Star People](https://www.rottentomatoes.com/m/star_people) ‡† | 2025 | 80% (10) | 85% | 4.5 (415) ⁱ | Sci-fi mystery drama |
 
-**Critics 80%+, no audience score yet (RT displays no Popcornmeter): 22**
+**Critics 80%+, no audience score yet (RT displays no Popcornmeter): 20**
 
 | # | Movie | Year | Critics | Audience | IMDb | Type of movie |
 |---|---|---|---|---|---|---|
@@ -115,18 +113,16 @@ Flags: ‡ Popcornmeter from only 50–99 ratings · † fewer than 20 critic re
 | 12 | [13 Days 13 Nights](https://www.rottentomatoes.com/m/13_days_13_nights) † | 2025 | 91% (11) | — | 6.7 (3,360) | French evacuation thriller (Kabul 2021) |
 | 13 | [Portal to Hell](https://www.rottentomatoes.com/m/portal_to_hell_2025) † | 2025 | 91% (11) | — | 5.4 (998) ⁱ | Horror comedy |
 | 14 | [The Forbidden City](https://www.rottentomatoes.com/m/the_forbidden_city_2025) | 2025 | 90% (21) | — | 6.7 (3,920) | Italian martial-arts action |
-| 15 | [A Useful Ghost](https://www.rottentomatoes.com/m/a_useful_ghost) | 2025 | 88% (50) | — | 6.7 (1,921) | Thai absurdist ghost comedy |
-| 16 | [I Live Here Now](https://www.rottentomatoes.com/m/i_live_here_now) †ʸ | 2025 | 87% (15) | — | 4.8 (337) ⁱ | Psychological horror |
-| 17 | [Yadang: The Snitch](https://www.rottentomatoes.com/m/yadang_the_snitch) † | 2025 | 87% (15) | — | 6.5 (1,419) | Korean crime action thriller |
-| 18 | [Self-Help](https://www.rottentomatoes.com/m/self_help) | 2025 | 83% (23) | — | 4.6 (469) ⁱ | Cult horror thriller |
-| 19 | [Rescue at Dongji](https://www.rottentomatoes.com/m/rescue_at_dongji) † | 2025 | 82% (11) | — | 6.3 (1,533) | Chinese WWII sea-rescue action drama |
-| 20 | [Ashes](https://www.rottentomatoes.com/m/ashes_2026_2) ⚠ | 2026 | 81% (21) | — | 4.7 (87) ⁱ |  |
-| 21 | [Anything That Moves](https://www.rottentomatoes.com/m/anything_that_moves) | 2025 | 80% (10) | — | 4.7 (228) ⁱ | Horror comedy thriller |
-| 22 | [Stalkers](https://www.rottentomatoes.com/m/stalkers_2025) † | 2025 | 80% (10) | — | 3.8 (145) ⁱ | Thriller |
+| 15 | [I Live Here Now](https://www.rottentomatoes.com/m/i_live_here_now) †ʸ | 2025 | 87% (15) | — | 4.8 (337) ⁱ | Psychological horror |
+| 16 | [Yadang: The Snitch](https://www.rottentomatoes.com/m/yadang_the_snitch) † | 2025 | 87% (15) | — | 6.5 (1,419) | Korean crime action thriller |
+| 17 | [Self-Help](https://www.rottentomatoes.com/m/self_help) | 2025 | 83% (23) | — | 4.6 (469) ⁱ | Cult horror thriller |
+| 18 | [Rescue at Dongji](https://www.rottentomatoes.com/m/rescue_at_dongji) † | 2025 | 82% (11) | — | 6.3 (1,533) | Chinese WWII sea-rescue action drama |
+| 19 | [Ashes](https://www.rottentomatoes.com/m/ashes_2026_2) ⚠ | 2026 | 81% (21) | — | 4.7 (87) ⁱ |  |
+| 20 | [Stalkers](https://www.rottentomatoes.com/m/stalkers_2025) † | 2025 | 80% (10) | — | 3.8 (145) ⁱ | Thriller |
 
 *Not qualifying: 3 more with critics and audience 80%+ and 20+ reviews but fewer than 250 audience ratings (Paul McCartney: Man on the Run (100+ Ratings), Are We Good? (50+ Ratings), Mirzapur: The Movie (50+ Verified Ratings)).*
 
-*Not qualifying: 9 more with critics 80%+ but audience below 80% (e.g. Lesbian Space Princess 96/33, Belén 95/76, Deep Cover 90/79, The Last Viking 90/77).*
+*Not qualifying: 7 more with critics 80%+ but audience below 80% (e.g. Belén 95/76, Deep Cover 90/79, The Last Viking 90/77, Hedda 90/53).*
 
 ## Hulu: 18 qualifying movies
 
