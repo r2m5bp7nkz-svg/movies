@@ -605,5 +605,11 @@
  },
  "superman_2025": {
   "genre_label": "superhero action adventure"
+ },
+ "paw_patrol_the_dino_movie": {
+  "genre_label": "animated kids adventure"
+ },
+ "leviticus": {
+  "genre_label": "queer sci-fi horror romance"
  }
 }

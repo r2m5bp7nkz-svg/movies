@@ -1,3 +1,4 @@
+import http.client
 #!/usr/bin/env python3
 """Pull JustWatch US catalog of 2025-2026 movies per provider package (FLATRATE). Saves raw JSON to raw/jw_<svc>_<date>.json"""
 import json, sys, time, urllib.request, urllib.error, datetime
@@ -21,6 +22,9 @@ def post(q,v,tries=6):
     return json.load(urllib.request.urlopen(req,timeout=60))
    except urllib.error.HTTPError as e:
     if e.code==429 and i<tries-1: time.sleep(10*(i+1)); continue
+    raise
+   except (TimeoutError,OSError,http.client.HTTPException) as e:
+    if i<tries-1: time.sleep(5*(i+1)); continue
     raise
 def main(only=None):
     d=datetime.date.today().isoformat()

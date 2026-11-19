@@ -11,9 +11,12 @@ for svc,aff in AFF.items():
     items=[]; after=None; pages=0
     while pages<60:
         u=f'https://www.rottentomatoes.com/cnapi/browse/movies_at_home/affiliates:{aff}~critics:fresh~sort:newest'+(f'?after={urllib.parse.quote(after)}' if after else '')
-        code,s=get(u)
-        try: j=json.loads(s)
-        except Exception: print(svc,'bad',code,s[:100]); break
+        j=None
+        for t in range(4):   # 2026-11-19: RT's cnapi intermittently 404s a page; retry live before giving up
+            code,s=get(u,refresh=t>0)
+            try: j=json.loads(s); break
+            except Exception: print(svc,'retry',t,code,s[:80]); time.sleep(3*(t+1))
+        if j is None: print(svc,'bad',code); break
         g=j.get('grid',{}); L=g.get('list',[]); items+=L; pages+=1
         old=[x for x in L if re.search(r'(20\d\d)',x.get('releaseDateText') or '') and int(re.search(r'(20\d\d)',x['releaseDateText']).group(1))<2025]
         pi=j.get('pageInfo') or g.get('pageInfo') or {}
