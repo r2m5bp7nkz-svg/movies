@@ -109,3 +109,6 @@ starz | 2 | 2
 - **Prime entitlement copy:** Amazon now often shows "Subscribe to <channel> or Prime". That counts as included. Ambiguous "Subscribe to X or N others" is `unknown` (not a hard channel_addon reject) so Reelgood/RT can confirm.
 - **official_check / reelgood_check:** commit after DELETE and per-row so worker threads writing `fetch_cache` do not deadlock on an open SQLite write txn.
 - Qualifying counts unchanged except Prime 12→11 (*Good Boy* dropped: official title page resolved to "Heel", Reelgood has no amazon_prime).
+
+## 2026-11-19 re-check
+Full live re-fetch (run 4). The 2026-11-15 scheduled run (run 3) was interrupted (JustWatch timeout in jw_supplement, re-run) and degraded (Disney+/Apple TV official pages unreachable); its rows are complete per stage and kept, annotated in `runs.notes`, and superseded by run 4. `rt_browse.py` now retries a page up to 4 times (RT's cnapi intermittently 404'd Peacock page 2). RT's HBO Max browse list currently returns only 18 items (RT-side); the JustWatch catalog remains the primary source. Backup before the run: `backups/movies_before_2026-11-19.db`.
